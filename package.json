@@ -1,5 +1,5 @@
 {
-  "name": "pgn-reader",
+  "name": "chess-moments",
   "version": "0.2.0",
   "description": "PGN reader is a javascript chess library that transforms PGN files into chess moments",
   "main": "index.js",
