@@ -5,7 +5,7 @@ const isEqual = require('lodash').isEqual;
 describe('basic examples', () => {
   it('basic PGN with one move', () => {
     // Arrange
-    const pgn = '1. e4';
+    const pgn = '1. e4 *';
 
     // Act
     const moments = parser(pgn);
@@ -20,7 +20,7 @@ describe('basic examples', () => {
 
   it('basic PGN with two moves', () => {
     // Arrange
-    const pgn = '1. e4 e5';
+    const pgn = '1. e4 e5 *';
 
     // Act
     const moments = parser(pgn);
@@ -37,7 +37,7 @@ describe('basic examples', () => {
 describe('invalid PGN', () => {
   it('first move is invalid in the PGN', () => {
     // Arrange
-    const pgn = '1. e5';
+    const pgn = '1. e5 *';
 
     // Act
     const moments = parser(pgn);
@@ -64,7 +64,7 @@ describe('with comments', () => {
 
   it('comment before the first move', () => {
     // Arrange
-    const pgn = '{one of the most popular openings for white} 1. e4 e5';
+    const pgn = '{one of the most popular openings for white} 1. e4 e5 *';
 
     // Act
     const moments = parser(pgn);
@@ -199,18 +199,18 @@ describe('everything put together', () => {
   it('chess match GM Georgescu Tiberiu', () => {
     // Arrange
     const pgn = [
-      '{Facusem deja 3 remize consecutive si castigasem o partida(+1) in prima runda} 1. d4 ',
-      '{Badev e un jucator de initiativa, de atac. De obicei joaca e4.} Nf6 2. Bg5 {Trompowsky - o ',
-      'arma mai rar intalnita in zilele noastre la marii maestrii} e6 {dupa parerea mea cea mai buna ',
-      'mutare si cu siguranta cea care lupta pentru tot punctul.} ({o alternativa interesanta este ',
-      'recomandarea lui Andrew Martin:} 2... d5 {precum in partida Baratosi-Georgescu.dar albul la ',
-      'un joc corect pastreaza += solid} 3. Bxf6 exf6 4. e3 c6 5. Bd3 g6 {Baratosi,D-Georgescu,T ',
-      '0-1  /CN Echipe juniori B20 2007}) 3. e4 h6 {[%csl Re4]} 4. Bxf6 Qxf6 {[%csl Gc8,Gf8] negrul ',
+      '{Facusem deja 3 remize consecutive si castigasem o partida(+1) in prima runda} 1. d4',
+      '{Badev e un jucator de initiativa, de atac. De obicei joaca e4.} Nf6 2. Bg5 {Trompowsky - o',
+      'arma mai rar intalnita in zilele noastre la marii maestrii} e6 {dupa parerea mea cea mai buna',
+      'mutare si cu siguranta cea care lupta pentru tot punctul.} ({o alternativa interesanta este',
+      'recomandarea lui Andrew Martin:} 2... d5 {precum in partida Baratosi-Georgescu.dar albul la',
+      'un joc corect pastreaza += solid} 3. Bxf6 exf6 4. e3 c6 5. Bd3 g6 {Baratosi,D-Georgescu,T',
+      '0-1  /CN Echipe juniori B20 2007}) 3. e4 h6 {[%csl Re4]} 4. Bxf6 Qxf6 {[%csl Gc8,Gf8] negrul',
       'ramane cu perechea de nebuni} *',
     ];
 
     // Act
-    const moments = parser(pgn.join(''));
+    const moments = parser(pgn);
 
     // Assert
     expect(moments[0].comment).to.equal(
@@ -253,7 +253,7 @@ describe('everything put together', () => {
     ];
 
     // Act
-    const moments = parser(pgn.join('\n'));
+    const moments = parser(pgn);
 
     // Assert
     expect(moments[0].shapes[0].brush).to.equal('red');

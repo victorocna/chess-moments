@@ -2,9 +2,11 @@ const { Chess } = require('chess.js');
 const { fen, parser, split } = require('./functions');
 
 module.exports = (pgn) => {
+  const input = Array.isArray(pgn) ? pgn.join('\n') : pgn;
+
   // load PGN and check headers for existing FEN
   const chess = new Chess();
-  chess.load_pgn(pgn);
+  chess.load_pgn(input);
   const header = chess.header();
 
   const store = {
@@ -13,7 +15,7 @@ module.exports = (pgn) => {
   };
 
   const history = new Map();
-  const variations = split(pgn).map(({ moves, depth }) => {
+  const variations = split(input).map(({ moves, depth }) => {
     // find previous FEN
     if (history.get(store.depth)) {
       store.fen = fen.previous(history, depth, store.depth);
@@ -29,5 +31,9 @@ module.exports = (pgn) => {
     return moments;
   });
 
-  return [].concat.apply([], variations);
+  // flatten array and add index for every moment
+  return [].concat.apply([], variations).map((moment, index) => {
+    moment.index = index;
+    return moment;
+  });
 };
