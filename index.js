@@ -1,4 +1,4 @@
-const { Chess } = require('chess.js');
+const { Chess } = require('./chess');
 const { fen, parser, split } = require('./functions');
 
 module.exports = (pgn) => {
