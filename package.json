@@ -1,16 +1,19 @@
 {
-  "name": "chessviewer",
+  "name": "@victorocna/pgn-parser",
   "version": "0.1.0",
-  "description": "",
+  "description": "Chessviewer is a javascript chess library that transforms PGN files into chess moments",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
     "watch": "mocha -w"
   },
-  "author": "",
+  "author": "victorocna <victor@chesscoders.com>",
   "keywords": [
     "chess"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/victorocna"
+  },
   "license": "MIT",
   "dependencies": {
     "chess.js": "^0.11.0"
