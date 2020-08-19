@@ -32,6 +32,65 @@ describe('basic examples', () => {
       'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2'
     );
   });
+
+  it('basic PGN as an array of moves', () => {
+    // Arrange
+    const pgn = [
+      '1. e4 e5 *', // array instead of string
+    ];
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments.length).to.equal(3);
+    expect(moments[2].move).to.equal('e5');
+    expect(moments[2].fen).to.equal(
+      'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2'
+    );
+  });
+
+  it('basic PGN as an array of moves with header information', () => {
+    // Arrange
+    const pgn = [
+      '[White "Boris Spassky"]',
+      '[Black "Robert Fisher"]',
+      '',
+      '1. e4 e5 *',
+    ];
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments.length).to.equal(3);
+    expect(moments[2].move).to.equal('e5');
+    expect(moments[2].fen).to.equal(
+      'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2'
+    );
+  });
+
+  it('basic PGN as an array of moves with header information and final newlines', () => {
+    // Arrange
+    const pgn = [
+      '[White "Boris Spassky"]',
+      '[Black "Robert Fisher"]',
+      '',
+      '1. e4 e5 *',
+      '',
+      '',
+    ];
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments.length).to.equal(3);
+    expect(moments[2].move).to.equal('e5');
+    expect(moments[2].fen).to.equal(
+      'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2'
+    );
+  });
 });
 
 describe('invalid PGN', () => {
