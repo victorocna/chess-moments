@@ -319,4 +319,29 @@ describe('everything put together', () => {
     expect(moments[4].shapes[0].brush).to.equal('green');
     expect(moments[10].shapes[0].brush).to.equal('yellow');
   });
+
+  it('chess diagram with starting position', () => {
+    // Arrange
+    const pgn = [
+      '[Annotator "Tiberiu Georgescu"]',
+      '[SetUp "1"]',
+      '[FEN "r4rk1/pp1qnpbp/2np2p1/2pNp1B1/2P1P3/3P1N2/PP3PPP/R2Q1RK1 w - - 0 1"]',
+      '[PlyCount "11"]',
+      '',
+      '1. Nxe7+ Nxe7 2. Bxe7 Qxe7 {[%cal Gf3e1,Gf3d2]} 3. Nd2 (3. Ne1 $2 f5 4. Nc2 Bh6',
+      '$11) 3... f5 4. Nb1 $14 {[%cal Gb1c3,Gc3d5] de exemplu} Rf7 (4... fxe4 5. dxe4',
+      'Rad8 6. Nc3 Qe6 7. Nd5 {[%csl Gd5,Rg7]}) 5. Nc3 Raf8 6. Nd5 {[%csl Gd5,Rg7]} *',
+      '',
+      '',
+    ];
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[0].fen).to.equal(
+      'r4rk1/pp1qnpbp/2np2p1/2pNp1B1/2P1P3/3P1N2/PP3PPP/R2Q1RK1 w - - 0 1'
+    );
+    expect(moments[1].move).to.equal('Nxe7+');
+  });
 });
