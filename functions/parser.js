@@ -37,8 +37,10 @@ module.exports = (moves, fen = initial, depth = 1) => {
     return moment;
   });
 
-  // finally add the first chess "moment"
-  if (fen === initial || first.comment || first.shapes.length > 0) {
+  // finally, add the first chess "moment" when needed
+  const header = chess.header();
+  const { comment, shapes } = first;
+  if (header.FEN || fen === initial || comment || shapes.length > 0) {
     moments.unshift(first);
   }
 
