@@ -1,12 +1,12 @@
 const { Chess } = require('./chess');
-const { fen, parser, split } = require('./functions');
+const { fen, parser, pgn, split } = require('./functions');
 
-module.exports = (pgn) => {
-  const input = Array.isArray(pgn) ? pgn.join('\n') : pgn;
+module.exports = (sloppyPgn) => {
+  const normalizedPgn = pgn.normalize(sloppyPgn);
 
   // load PGN and check headers for existing FEN
   const chess = new Chess();
-  chess.load_pgn(input);
+  chess.load_pgn(normalizedPgn);
   const header = chess.header();
 
   const store = {
@@ -15,7 +15,7 @@ module.exports = (pgn) => {
   };
 
   const history = new Map();
-  const variations = split(input).map(({ moves, depth }) => {
+  const variations = split(normalizedPgn).map(({ moves, depth }) => {
     // find previous FEN
     if (history.get(store.depth)) {
       store.fen = fen.previous(history, depth, store.depth);
