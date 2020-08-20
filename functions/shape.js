@@ -1,10 +1,10 @@
 const brush = require('./brush');
-
 module.exports = (comment) => {
   try {
     const draw = [];
     const shapeComments = comment
       .split(']')
+      .map((it) => it.trim())
       .filter((it) => it.indexOf('[') === 0);
 
     for (const shapeComment of shapeComments) {

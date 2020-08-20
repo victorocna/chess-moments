@@ -190,6 +190,19 @@ describe('with shapes', () => {
     expect(moments[1].shapes[0].orig).to.equal('d1');
     expect(moments[1].shapes[0].dest).to.equal('h5');
   });
+
+  it('with multiple shapes after the first move', () => {
+    // Arrange
+    const pgn = '1. e4 {[%csl Ge4] [%csl Yd1h5] [%csl Rf1a6]} *';
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[1].shapes[0].brush).to.equal('green');
+    expect(moments[1].shapes[1].brush).to.equal('yellow');
+    expect(moments[1].shapes[2].brush).to.equal('red');
+  });
 });
 
 describe('with variations', () => {
