@@ -205,8 +205,8 @@ describe('with variations', () => {
     expect(moments[1].depth).to.equal(1);
     expect(moments[3].move).to.equal('d4');
     expect(moments[3].depth).to.equal(2);
-    expect(moments[4].move).to.equal('e5');
-    expect(moments[4].depth).to.equal(1);
+    expect(moments[5].move).to.equal('e5');
+    expect(moments[5].depth).to.equal(1);
   });
 
   it('with second move variation', () => {
@@ -218,7 +218,7 @@ describe('with variations', () => {
     const depths = moments
       .filter(({ depth }) => depth)
       .map(({ depth }) => depth);
-    const expected = [1, 1, 1, 1, 2, 1];
+    const expected = [1, 1, 1, 1, 2, 2, 1, 1];
 
     // Assert
     expect(moments[4].depth).to.equal(2);
@@ -234,10 +234,10 @@ describe('with variations', () => {
     const depths = moments
       .filter(({ depth }) => depth)
       .map(({ depth }) => depth);
-    const expected = [1, 1, 1, 2, 1, 2, 1];
+    const expected = [1, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1];
 
     // Assert
-    expect(moments[5].depth).to.equal(2);
+    expect(moments[3].depth).to.equal(2);
     expect(isEqual(expected, depths)).to.equal(true);
   });
 
@@ -249,8 +249,36 @@ describe('with variations', () => {
     const moments = parser(pgn);
 
     // Assert
-    expect(moments[3].move).to.equal('e6');
-    expect(moments[3].comment).to.equal('the french defence');
+    expect(moments[4].move).to.equal('e6');
+    expect(moments[4].comment).to.equal('the french defence');
+  });
+});
+
+describe('with comments and variations', () => {
+  it('comment before the first move of a variation', () => {
+    // Arrange
+    const pgn = '1. e4 e5 ({the scandinavian defence} 1... d5) *';
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[3].comment).to.equal('the scandinavian defence');
+  });
+});
+
+describe('with consecutive variations', () => {
+  it("consecutive variantions after white's first move", () => {
+    // Arrange
+    const pgn = '1. e4 e5 (1... d5) (1... c5) 2. Nf3 *';
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[2].move).to.equal('e5');
+    expect(moments[4].move).to.equal('d5');
+    expect(moments[6].move).to.equal('c5');
   });
 });
 
@@ -289,13 +317,13 @@ describe('everything put together', () => {
       'precum in partida Baratosi-Georgescu.dar albul la un joc corect pastreaza += solid'
     );
     expect(moments[7].move).to.equal('Bxf6');
-    expect(moments[14].move).to.equal('h6');
-    expect(moments[14].shapes[0].brush).to.equal('red');
-    expect(moments[14].shapes[0].orig).to.equal('e4');
-    expect(moments[16].move).to.equal('Qxf6');
-    expect(moments[16].shapes[1].brush).to.equal('green');
-    expect(moments[16].shapes[1].orig).to.equal('f8');
-    expect(moments[16].comment).to.equal(
+    expect(moments[15].move).to.equal('h6');
+    expect(moments[15].shapes[0].brush).to.equal('red');
+    expect(moments[15].shapes[0].orig).to.equal('e4');
+    expect(moments[17].move).to.equal('Qxf6');
+    expect(moments[17].shapes[1].brush).to.equal('green');
+    expect(moments[17].shapes[1].orig).to.equal('f8');
+    expect(moments[17].comment).to.equal(
       ' negrul ramane cu perechea de nebuni'
     );
   });
