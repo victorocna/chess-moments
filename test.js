@@ -164,6 +164,18 @@ describe('with comments', () => {
     expect(moments[2].move).to.equal('e5');
     expect(moments[2].comment).to.equal('one of the most popular openings :)');
   });
+
+  it('comment with result', () => {
+    // Arrange
+    const pgn = '1. f4 e6 {with the idea 2. g4 Qh4# 0-1} *';
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[2].move).to.equal('e6');
+    expect(moments[2].comment).to.equal('with the idea 2. g4 Qh4# 0-1');
+  });
 });
 
 describe('with shapes', () => {

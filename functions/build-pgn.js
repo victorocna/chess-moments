@@ -11,12 +11,10 @@ module.exports = (moves, fen) => {
     decodedMoves,
   ];
 
-  const results = ['1-0', '0-1', '1/2-1/2', '*'];
-  const hasResult = results.filter(
-    (result) => decodedMoves.indexOf(result) > -1
-  );
+  const possibilities = ['1-0', '0-1', '1/2-1/2', '*'];
+  const result = decodedMoves.split(' ').pop();
 
-  if (!hasResult.length) {
+  if (!possibilities.includes(result)) {
     pgn.push('*');
   }
 
