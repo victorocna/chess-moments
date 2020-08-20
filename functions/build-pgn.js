@@ -11,7 +11,12 @@ module.exports = (moves, fen) => {
     decodedMoves,
   ];
 
-  if (decodedMoves.indexOf('*') === -1) {
+  const results = ['1-0', '0-1', '1/2-1/2', '*'];
+  const hasResult = results.filter(
+    (result) => decodedMoves.indexOf(result) > -1
+  );
+
+  if (!hasResult.length) {
     pgn.push('*');
   }
 

@@ -33,6 +33,21 @@ describe('basic examples', () => {
     );
   });
 
+  it('basic PGN with one move and a defined result', () => {
+    // Arrange
+    const pgn = '1. e4 1-0';
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments.length).to.equal(2);
+    expect(moments[1].move).to.equal('e4');
+    expect(moments[1].fen).to.equal(
+      'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1'
+    );
+  });
+
   it('basic PGN as an array of moves', () => {
     // Arrange
     const pgn = [
