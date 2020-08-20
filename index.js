@@ -32,7 +32,9 @@ module.exports = (sloppyPgn) => {
   });
 
   // flatten array and add index for every moment
-  return [].concat.apply([], variations).map((moment, index) => {
+  const flatten = [].concat.apply([], variations);
+
+  return flatten.map((moment, index) => {
     moment.index = index;
     return moment;
   });

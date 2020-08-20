@@ -7,7 +7,7 @@
  */
 module.exports = (history, currentDepth, previousDepth) => {
   try {
-    if (currentDepth > previousDepth) {
+    if (currentDepth >= previousDepth) {
       return history.get(previousDepth)[0];
     }
 

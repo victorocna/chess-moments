@@ -16,5 +16,8 @@ module.exports = (pgn) => {
     });
   });
 
-  return [].concat.apply([], variations);
+  // flatten array and exclude variations without moves
+  const flatten = [].concat.apply([], variations);
+
+  return flatten.filter(({ moves }) => moves);
 };
