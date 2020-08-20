@@ -1,4 +1,5 @@
 const brush = require('./brush');
+
 module.exports = (comment) => {
   try {
     const draw = [];
@@ -20,8 +21,12 @@ module.exports = (comment) => {
       }
     }
 
+    if (!draw.length) {
+      return undefined;
+    }
+
     return draw;
   } catch (err) {
-    return [];
+    return undefined;
   }
 };

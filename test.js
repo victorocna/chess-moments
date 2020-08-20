@@ -336,9 +336,7 @@ describe('everything put together', () => {
     expect(moments[17].move).to.equal('Qxf6');
     expect(moments[17].shapes[1].brush).to.equal('green');
     expect(moments[17].shapes[1].orig).to.equal('f8');
-    expect(moments[17].comment).to.equal(
-      ' negrul ramane cu perechea de nebuni'
-    );
+    expect(moments[17].comment).to.equal('negrul ramane cu perechea de nebuni');
   });
 
   it('chess diagram with many shapes', () => {

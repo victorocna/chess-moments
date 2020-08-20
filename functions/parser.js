@@ -1,8 +1,7 @@
 const { Chess } = require('chess.js');
 const { initial } = require('./fen');
 const pgn = require('./pgn');
-const prettify = require('./prettify');
-const shape = require('./shape');
+const moment = require('./moment');
 
 module.exports = (moves, fen = initial, depth = 1) => {
   const chess = new Chess();
@@ -16,31 +15,23 @@ module.exports = (moves, fen = initial, depth = 1) => {
     chess.undo();
   }
 
-  const first = {
-    depth,
-    fen: chess.fen(),
-    comment: prettify(chess.get_comment()),
-    shapes: shape(chess.get_comment()),
-  };
+  const comment = chess.get_comment();
+  const first = moment.build({ depth, comment, fen: chess.fen() });
+
   const moments = history.map((move) => {
     chess.move(move);
-    const comment = chess.get_comment();
 
-    const moment = {
-      move,
+    return moment.build({
       depth,
+      move,
+      comment: chess.get_comment(),
       fen: chess.fen(),
-      comment: prettify(comment),
-      shapes: shape(comment),
-    };
-
-    return moment;
+    });
   });
 
   // finally, add the first chess "moment" when needed
   const header = chess.header();
-  const { comment, shapes } = first;
-  if (header.FEN || fen === initial || comment || shapes.length > 0) {
+  if (header.FEN || fen === initial || first.comment || first.shapes) {
     moments.unshift(first);
   }
 
