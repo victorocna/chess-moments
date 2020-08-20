@@ -176,6 +176,18 @@ describe('with comments', () => {
     expect(moments[2].move).to.equal('e6');
     expect(moments[2].comment).to.equal('with the idea 2. g4 Qh4# 0-1');
   });
+
+  it('comment unknown commands like "%evp"', () => {
+    // Arrange
+    const pgn = '{[%evp 0,1,29999,-30000]} 1. e4 *';
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[0].comment).to.be.undefined;
+    expect(moments[1].move).to.equal('e4');
+  });
 });
 
 describe('with shapes', () => {
