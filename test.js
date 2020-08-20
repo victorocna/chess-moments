@@ -191,7 +191,7 @@ describe('with comments', () => {
 });
 
 describe('with shapes', () => {
-  it('e4 field with green highlight', () => {
+  it.only('e4 field with green highlight', () => {
     // Arrange
     const pgn = '1. e4 {[%csl Ge4]} *';
 

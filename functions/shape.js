@@ -10,7 +10,11 @@ module.exports = (comment) => {
 
     for (const shapeComment of shapeComments) {
       // transform "[%csl Ya7" into "Ya7"
-      const shapes = shapeComment.split(' ').pop();
+      const possibilities = ['[%cal', '[%csl'];
+      const [type, shapes] = shapeComment.split(' ');
+      if (!possibilities.includes(type)) {
+        return false;
+      }
 
       for (const target of shapes.split(',')) {
         draw.push({
