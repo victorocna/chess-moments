@@ -242,6 +242,20 @@ describe('with shapes', () => {
     expect(moments[1].shapes[1].brush).to.equal('yellow');
     expect(moments[1].shapes[2].brush).to.equal('red');
   });
+
+  it('with multiline comment with shapes', () => {
+    const pgn = [
+      '{[%cal Ya1a8,Yb1b8,Yc1c8,Yd1d8,Ye1e8,Yf1f8,Yg1g8,',
+      'Yh1h8,Ra8h8,Ra7h7,Ra6h6,Ra5h5,Ra4h4,Ra3h3,Ra2h2,Ra1h1]} *',
+    ];
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[0].shapes[0].brush).to.equal('yellow');
+    expect(moments[0].shapes[11].brush).to.equal('red');
+  });
 });
 
 describe('with variations', () => {
