@@ -2,12 +2,22 @@
   "name": "chess-moments",
   "version": "0.6.2",
   "description": "PGN reader is a javascript chess library that transforms PGN files into chess moments",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "index.js",
+    "chess.js",
+    "functions/*.js"
+  ],
   "scripts": {
     "test": "mocha",
     "watch": "mocha -w"
   },
   "author": "victorocna <victor@chesscoders.com>",
+  "homepage": "https://github.com/victorocna/chess-moments",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/victorocna/chess-moments.git"
+  },
   "keywords": [
     "chess",
     "pgn"
