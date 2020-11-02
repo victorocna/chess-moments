@@ -1,7 +1,7 @@
 const { Chess } = require('./chess');
 const { fen, parser, pgn, split } = require('./functions');
 
-module.exports = (sloppyPgn) => {
+const moments = (sloppyPgn) => {
   const normalizedPgn = pgn.normalize(sloppyPgn);
 
   // load PGN and check headers for existing FEN
@@ -39,3 +39,9 @@ module.exports = (sloppyPgn) => {
     return moment;
   });
 };
+
+module.exports = moments;
+module.exports.moments = moments;
+
+module.exports.fen = fen;
+module.exports.pgn = pgn;
