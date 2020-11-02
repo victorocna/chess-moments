@@ -1,10 +1,12 @@
+const castle = require('./replace-castling');
+
 module.exports = (pgn) => {
   if (typeof pgn === 'string') {
-    return pgn.trim();
+    return castle(pgn.trim());
   }
 
   if (Array.isArray(pgn)) {
-    return pgn.join('\n').trim();
+    return castle(pgn.join('\n').trim());
   }
 
   throw new Error('Unsupported PGN type');

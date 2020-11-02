@@ -437,3 +437,16 @@ describe('everything put together', () => {
     expect(moments[1].move).to.equal('Nxe7+');
   });
 });
+
+describe('special cases', () => {
+  it('wrong castling symbol', () => {
+    // Arrange
+    const pgn = '1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. 0-0 *';
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[7].move).to.equal('O-O');
+  });
+});
