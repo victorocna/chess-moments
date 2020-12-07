@@ -261,7 +261,7 @@ describe('with shapes', () => {
 describe('with variations', () => {
   it('with first move variation', () => {
     // Arrange
-    const pgn = '1. e4 (1. d4) e5 *';
+    const pgn = '1. e4 (1. d4) 1... e5 *';
 
     // Act
     const moments = parser(pgn);
@@ -277,7 +277,7 @@ describe('with variations', () => {
 
   it('with second move variation', () => {
     // Arrange
-    const pgn = '1. e4 e5 2. Nf3 (2. Bc4) Nc6 *';
+    const pgn = '1. e4 e5 2. Nf3 (2. Bc4) 2... Nc6 *';
 
     // Act
     const moments = parser(pgn);
@@ -293,7 +293,7 @@ describe('with variations', () => {
 
   it('with multiple variations', () => {
     // Arrange
-    const pgn = '1. e4 e5 (1... c5) 2. Nf3 (2. Bc4) Nc6 *';
+    const pgn = '1. e4 e5 (1... c5) 2. Nf3 (2. Bc4) 2... Nc6 *';
 
     // Act
     const moments = parser(pgn);
@@ -460,5 +460,18 @@ describe('special cases', () => {
 
     // Assert
     expect(moments[10].move).to.equal('Bc5');
+  });
+
+  it('multiple subvariants with deep first subvariant', () => {
+    // Arrange
+    const pgn =
+      '1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4 f6 (3... Nf6) (3... h6)) (2... Bc5) (2... h5) 1-0';
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[14].move).to.equal('Bc5');
+    expect(moments.length).to.equal(17);
   });
 });

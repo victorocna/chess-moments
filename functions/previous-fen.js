@@ -1,3 +1,5 @@
+const matchesFen = require('./matches-fen');
+
 /**
  * Find previous FEN from history
  *
@@ -5,11 +7,10 @@
  * @param {Number} currentDepth
  * @param {Number} previousDepth
  */
-module.exports = (history, currentDepth, previousDepth) => {
+const previousFen = (history, moves, currentDepth, previousDepth) => {
   try {
     const sameLevel = currentDepth === previousDepth;
     const fromMainline = currentDepth > previousDepth;
-    const fromSubvariant = currentDepth < previousDepth;
 
     if (sameLevel) {
       return history.get(previousDepth - 1)[0];
@@ -17,12 +18,17 @@ module.exports = (history, currentDepth, previousDepth) => {
     if (fromMainline) {
       return history.get(previousDepth)[0];
     }
-    if (fromSubvariant) {
-      return history.get(currentDepth)[1];
+
+    const index = (previousDepth - currentDepth) % 2;
+    const candidate = history.get(currentDepth)[index];
+    if (matchesFen(moves, candidate)) {
+      return candidate;
     }
 
-    throw new Error('Cannot find previous FEN');
+    return previousFen(history, moves, currentDepth - 1, previousDepth);
   } catch (err) {
-    return '8/8/8/8/8/8/8/8 w - - 0 1';
+    return false;
   }
 };
+
+module.exports = previousFen;

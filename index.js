@@ -18,7 +18,7 @@ const moments = (sloppyPgn) => {
   const variations = split(normalizedPgn).map(({ moves, depth }) => {
     // find previous FEN
     if (history.get(store.depth)) {
-      store.fen = fen.previous(history, depth, store.depth);
+      store.fen = fen.previous(history, moves, depth, store.depth);
     }
     store.depth = depth;
 
