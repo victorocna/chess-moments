@@ -449,4 +449,16 @@ describe('special cases', () => {
     // Assert
     expect(moments[7].move).to.equal('O-O');
   });
+
+  it('multiple subvariants with more than one move', () => {
+    // Arrange
+    const pgn =
+      '1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4 f6) (2... Bc5) (2... h5) 3. Bb5 1-0';
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[10].move).to.equal('Bc5');
+  });
 });
