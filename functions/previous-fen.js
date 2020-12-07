@@ -4,6 +4,7 @@ const matchesFen = require('./matches-fen');
  * Find previous FEN from history
  *
  * @param {Map} history
+ * @param {String} moves
  * @param {Number} currentDepth
  * @param {Number} previousDepth
  */
