@@ -1,10 +1,10 @@
 /**
- * Does a string end in zero or not
- * @param {String} string
+ * Does a FEN end in zero or not
+ * @param {String} fen
  */
-module.exports = (string) => {
+module.exports = (fen) => {
   try {
-    return string.lastIndexOf('0') === string.length - 1;
+    return fen.split(' ').pop() === '0';
   } catch (err) {
     return false;
   }
