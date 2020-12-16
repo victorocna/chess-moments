@@ -475,3 +475,71 @@ describe('special cases', () => {
     expect(moments.length).to.equal(17);
   });
 });
+
+describe('real chess games', () => {
+  it('Fischer vs. Andersson [1-0]', () => {
+    // Arrange
+    const pgn = [
+      '[Event "Siegen exh"]',
+      '[White "Fischer, Robert James"]',
+      '[Black "Andersson, Ulf"]',
+      '[Result "1-0"]',
+      '[SetUp "1"]',
+      '[FEN "r2qrbk1/1pp3pp/2n1bp2/p2np3/8/PP1PPN2/1BQNBPPP/R4RK1 w - - 0 13"]',
+      '[PlyCount "32"]',
+      '',
+      '13. Kh1 $1 {!} (13. d4 exd4 14. Nxd4 Nxd4 15. Bxd4 c5 16. Bxc5 (16. Bb2 Qd7 (',
+      '16... f5 17. Bd3 Qg5 18. Nf3 Qh5) 17. Bd3 f5 18. Nc4) 16... Rc8 17. b4 b6)',
+      '13... Qd7 14. Rg1 $36 Rad8 15. Ne4 Qf7 16. g4 g6 17. Rg3 $16 Bg7 (17... Nb6 18.',
+      'g5 $1 $40) 18. Rag1 Nb6 19. Nc5 Bc8 20. Nh4 (20. g5 f5) 20... Nd7 $6 (20... Kh8',
+      '$5) 21. Ne4 Nf8 22. Nf5 $1 {!} Be6 (22... Bxf5 23. gxf5 g5 24. Nxg5 fxg5 25.',
+      'Rxg5 $18 {[%cal Re2h5]}) (22... gxf5 23. gxf5 Bxf5 (23... Kh8 24. Rxg7 Qxg7 25.',
+      'Rxg7 Kxg7 26. Bg4 {[%cal Rf2f4]}) 24. Rxg7+ Qxg7 25. Nxf6+) 23. Nc5 Ne7',
+      '$6 (23... Bc8 $5) 24. Nxg7 Kxg7 25. g5 $40 Nf5 (25... fxg5 26. Rf3 Nf5 27. e4 (',
+      '27. Bxe5+ Kg8 28. Ne4 $5 Nd7 29. Nxg5 $18)) 26. Rf3 b6 27. gxf6+ $1 {!} Kh8 (',
+      '27... Qxf6 28. Ne4 $18) 28. Nxe6 Rxe6 {and White won after couple of moves.}',
+      '1-0',
+      '',
+    ];
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[111].move).to.equal('Rxe6');
+    expect(moments.length).to.equal(112);
+  });
+
+  it('Selezniev vs. Alekhine [0-1]', () => {
+    // Arrange
+    const pgn = [
+      '[Event "Triberg-A"]',
+      '[Site "Triberg"]',
+      '[Date "1921.07.09"]',
+      '[Round "3"]',
+      '[White "Selezniev, Alexey Sergeevich"]',
+      '[Black "Alekhine, Alexander"]',
+      '[Result "0-1"]',
+      '[SetUp "1"]',
+      '[FEN "1r3rk1/2qnppb1/b2p2pp/p1pP4/P1P5/3B1NP1/2QBPP1P/1R3RK1 b - - 0 20"]',
+      '[PlyCount "16"]',
+      '[EventDate "1921.07.07"]',
+      '',
+      '20... Rb4 $1 {[%csl Rc4][%cal Gg7b2] !} 21. Bxb4 cxb4 22. Nd2 Nc5 (22... Rc8)',
+      '23. Nb3 Nd7 $2 {?} (23... Nxa4 $6 24. Ra1 Nc5 25. Nxa5 Bxa1 26. Rxa1 Kg7 27.',
+      'Nc6) (23... Rc8 $1 24. Nxc5 Qxc5 25. Rfc1 Bc3 26. Qb3 Bxc4 27. Bxc4 Qxc4 28.',
+      'Qxc4 Rxc4 $17) 24. c5 $1 {!} Bxd3 25. exd3 $1 {!} (25. Qxd3 dxc5) 25... dxc5',
+      '26. Rfe1 (26. Qc4 Qd6 27. Nxa5 Ne5 28. Qb3 Ra8) 26... Ne5 27. Re3 (27. Qxc5',
+      'Nf3+ 28. Kf1 Qxc5 29. Nxc5 Nd2+ 30. Ke2 Nxb1 31. Rxb1 Rd8 $1) 27... Rc8 28. Rc1',
+      '$16 {Black has won the game after a long fight.} 0-1',
+      '',
+    ];
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[65].move).to.equal('Rc1');
+    expect(moments.length).to.equal(66);
+  });
+});
