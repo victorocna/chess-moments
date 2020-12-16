@@ -8,7 +8,7 @@ module.exports = (moves, fen) => {
   ];
 
   const possibilities = ['1-0', '0-1', '1/2-1/2', '*'];
-  const result = decodedMoves.split(' ').pop();
+  const result = decodedMoves.split('\n').join(' ').split(' ').pop();
 
   if (!possibilities.includes(result)) {
     pgn.push('*');
