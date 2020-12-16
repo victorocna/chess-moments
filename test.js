@@ -477,7 +477,7 @@ describe('special cases', () => {
 });
 
 describe('real chess games', () => {
-  it('Fischer vs. Andersson [1-0]', () => {
+  it('Fischer vs. Andersson', () => {
     // Arrange
     const pgn = [
       '[Event "Siegen exh"]',
@@ -510,7 +510,7 @@ describe('real chess games', () => {
     expect(moments.length).to.equal(112);
   });
 
-  it('Selezniev vs. Alekhine [0-1]', () => {
+  it('Selezniev vs. Alekhine', () => {
     // Arrange
     const pgn = [
       '[Event "Triberg-A"]',
@@ -541,5 +541,122 @@ describe('real chess games', () => {
     // Assert
     expect(moments[65].move).to.equal('Rc1');
     expect(moments.length).to.equal(66);
+  });
+
+  it('Karpov vs. Portisch', () => {
+    // Arrange
+    const pgn = [
+      '[Event "Milano (m/2)"]',
+      '[Site "Milano (m/2) 20/301"]',
+      '[Date "1975.??.??"]',
+      '[Round "?"]',
+      '[White "Karpov, An"]',
+      '[Black "Portisch, Lajos"]',
+      '[Result "1-0"]',
+      '[ECO "C72"]',
+      '[SetUp "1"]',
+      '[FEN "4brk1/6pp/pp1p1p2/8/1PP1P1PP/2B2P2/3K4/6R1 w - - 0 40"]',
+      '[PlyCount "49"]',
+      '[EventDate "1975.??.??"]',
+      '',
+      '40. Ra1 Bf7 41. Rxa6 Rb8 42. Kd3 $18 {White won important pawn and from now',
+      'Karpovs task is not so difficult.} h5 43. b5 $1 hxg4 (43... Rc8 44. Ra4 {',
+      'like in the game,but possible was} (44. Rxb6 Bxc4+ 45. Kd4 hxg4 46. fxg4 Be2',
+      '47. g5 Rc4+ 48. Ke3 Rxc3+ 49. Kxe2 $18)) 44. fxg4 Rc8 45. Ra4 Be6 46. g5 f5 (',
+      '46... fxg5 47. hxg5 Kh7 48. Bd4 Kg6 49. Bxb6 Kxg5 50. Bd4 {winning.}) 47. exf5',
+      'Bxf5+ 48. Kd4 Kf7 49. Bb4 Ke6 50. Ra6 Rb8 ({Did not help} 50... Rh8 51. Rxb6',
+      'Rxh4+ 52. Kc3 Rh3+ 53. Kb2 Rd3 54. c5 $18) 51. h5 Bg4 52. h6 gxh6 53. gxh6 Bf5',
+      '54. Bd2 Rg8 55. Bf4 $1 (55. Rxb6 Rg4+ 56. Kc3 Rg3+ 57. Kb4 (57. Kb2 Rg2) 57...',
+      'Rg4 $132) 55... Rb8 56. Ra7 Kf6 57. Rg7 Be6 58. Rc7 Rh8 59. Rc6 Rg8 60. Rxd6',
+      'Kf5 61. Rxb6 Rg4 62. Rxe6 Kxe6 63. Ke4 Rg1 64. b6 1-0',
+      '',
+    ];
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[97].move).to.equal('b6');
+    expect(moments.length).to.equal(98);
+  });
+
+  it('Mikhalchishin vs. Slobodjan', () => {
+    // Arrange
+    const pgn = [
+      '[Event "Dortmund op-A"]',
+      '[Site "Dortmund"]',
+      '[Date "1993.??.??"]',
+      '[Round "?"]',
+      '[White "Mikhalchishin, Adrian"]',
+      '[Black "Slobodjan, Roman"]',
+      '[Result "1-0"]',
+      '[ECO "D30"]',
+      '',
+      '1. Nf3 d5 2. d4 Nf6 3. c4 c6 4. e3 e6 5. Nbd2 (5. Nc3 Nbd7 6. Bd3 (6. Qc2 Bd6 (',
+      '6... b6 7. Bd3 Bb7 8. O-O Rc8 9. Ne5 c5 10. Qa4) 7. Bd3 O-O 8. O-O b6 9. b3 Bb7',
+      '10. Bb2 Rb8 (10... Rc8 11. e4 dxe4 12. Nxe4 Nxe4 13. Bxe4 Nf6 14. Bd3 c5 (14...',
+      'h6 15. c5 Bb8 (15... bxc5 16. dxc5 Bxc5 17. Qxc5 Qxd3 18. Qxa7 (18. Bxf6 gxf6',
+      '19. Qxa7)) 16. Rad1) 15. dxc5 Bxc5 16. Bxf6 Qxf6 17. Bxh7+ Kh8 18. Be4) 11. e4',
+      'dxe4 12. Nxe4 Nxe4 13. Bxe4 Nf6 14. Bd3) 6... Bd6) 5... Be7 (5... c5 6. cxd5',
+      'exd5 7. dxc5 Bxc5 8. Nb3 Bb6 9. Be2 O-O 10. O-O Nc6 11. Nbd4 Bd7) 6. b3 b6 7.',
+      'Bd3 Bb7 8. O-O Nbd7 9. Bb2 O-O 10. Qe2 (10. Ne5 Rc8 11. f4 c5 12. Qf3 {[%cal',
+      'Gf3h3]} (12. cxd5 exd5 (12... Nxd5 13. Bxh7+ (13. Qf3) (13. Rf3 Nb4 14. Bxh7+',
+      'Kxh7 15. Rh3+ Kg8 16. Qh5)) 13. Qf3 {[%cal Gf3h3]} c4) 12... dxc4 13. Qxb7 cxd3',
+      '(13... Rc7) 14. Nc6 Qe8 (14... Rc7 15. Nxe7+ Kh8) 15. Nxa7 (15. Qxc8)) 10... c5',
+      '11. Rad1 Qc7 12. Ne5 Rad8 13. f4 Ne4 (13... a6) (13... a5 14. cxd5 exd5 15. Bf5',
+      'a4) 14. cxd5 exd5 15. Nxe4 dxe4 16. Bc4 cxd4 (16... a5 17. Qh5 g6 18. Nxg6 hxg6',
+      '19. Qxg6+ Kh8) 17. Bxd4 (17. exd4 Nf6 (17... Ba8 18. Rc1 Qb7 19. Ba6 (19. Rfd1',
+      'Nxe5 20. fxe5)) 18. Rc1 Qb8) 17... Nf6 18. Ng4 (18. Rc1 Qb8 19. Ba6) 18... Nxg4',
+      '(18... Nd5 19. Bxg7 (19. Qb2 f6 20. Qc2 Kh8 21. Qxe4 Nc3) (19. Nh6+ gxh6 (19...',
+      'Kh8 20. Bxg7+ (20. Qb2 f6 21. Nf5) 20... Kxg7 21. Nf5+ Kh8 22. Bxd5 Bxd5 23.',
+      'Qb2+ f6) 20. Qg4+ Bg5 21. fxg5 Bc8 22. Qh5 Nxe3 23. Bxe3) 19... Nxf4 (19...',
+      'Kxg7) 20. Rxf4 Kxg7 21. Rdf1) 19. Qxg4 Rxd4 (19... g6 20. f5 Bc8 21. fxg6 Bxg4',
+      '22. gxf7+ Rxf7 23. Bxf7+ Kf8 24. Be6+ Ke8 25. Bxg4) 20. Rxd4 Bc6 21. Qe2 Bc5',
+      '22. Rdd1 Qb7 23. a4 a5 24. Kh1 Qe7 25. Bd5 Qf6 26. Qc4 Re8 27. Bxc6 Qxc6 28.',
+      'Rd5 Qb7 29. Rfd1 Qc8 30. Rd7 {Mikhalchishin,A (2520)-Slobodjan,R (2440)',
+      'Dortmund op-A 1993 (8) 1-0} 1-0',
+      '',
+    ];
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[286].move).to.equal('Rd7');
+    expect(moments.length).to.equal(287);
+  });
+
+  it('Beliavsky vs. Karpov', () => {
+    // Arrange
+    const pgn = [
+      '[Event "USSR (ch) "]',
+      '[Site "?"]',
+      '[Date "1973.??.??"]',
+      '[Round "?"]',
+      '[White "Beliavsky, Alexander G"]',
+      '[Black "Karpov, An"]',
+      '[Result "0-1"]',
+      '[ECO "E54"]',
+      '[SetUp "1"]',
+      '[FEN "2r5/3R4/4pkpp/3b4/5P2/P5BP/6P1/6K1 b - - 0 36"]',
+      '[PlyCount "73"]',
+      '',
+      '36... Rc1+ 37. Kf2 Rc2+ 38. Ke3 Rc3+ 39. Kf2 Rxa3 40. Bh4+ g5 41. fxg5+ hxg5',
+      '42. Bg3 Ra2+ 43. Ke3 Rxg2 $17 44. Bc7 {It was necessary to try to find',
+      'counterplay immediately!} (44. Bd6 Ra2 (44... Rb2 45. Kd4) 45. h4 g4 46. Kf4',
+      'Rg2 47. Be5+) 44... Ra2 45. Rh7 Ra8 $1 46. Kf2 Kg6 47. Rd7 Ra3 48. Rd8 Rf3+ 49.',
+      'Kg1 Rxh3 $19 50. Rb8 Rc3 51. Bd6 Rc2 52. Rf8 Rc6 53. Be5 g4 54. Rf6+ Kg5 55.',
+      'Rf8 Bf3 56. Bf4+ Kg6 57. Kf2 Rc2+ 58. Kg3 Rg2+ 59. Kh4 Re2 60. Bg3 e5 61. Rb8',
+      'e4 62. Rb5 Re3 63. Rb6+ Kf7 64. Kg5 Rd3 65. Kf5 e3 66. Rd6 Rb3 67. Rd7+ Ke8 68.',
+      'Ke6 e2 69. Re7+ Kf8 70. Kf6 Bd5 71. Bh4 Rf3+ 72. Kg6 Bf7+ 0-1',
+      '',
+    ];
+
+    // Act
+    const moments = parser(pgn);
+
+    // Assert
+    expect(moments[86].move).to.equal('Bf7+');
+    expect(moments.length).to.equal(87);
   });
 });
