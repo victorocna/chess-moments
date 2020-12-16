@@ -11,7 +11,7 @@ module.exports = (pgn, fen) => {
 
   const pgnParts = pgn.split(' ')[0];
   const pgnNextColor = pgnParts.includes('...') ? 'b' : 'w';
-  const pgnMoveCount = pgnParts.match(/[0-9]+/)[0];
+  const pgnMoveCount = pgnParts.split('.')[0];
 
   return fenNextColor === pgnNextColor && fenMoveCount === pgnMoveCount;
 };
