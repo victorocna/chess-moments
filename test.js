@@ -1,6 +1,6 @@
-const parser = require('./index');
-const expect = require('chai').expect;
-const isEqual = require('lodash').isEqual;
+const { flat, tree } = require('.');
+const { expect } = require('chai');
+const { isEqual } = require('lodash');
 
 describe('basic examples', () => {
   it('basic PGN with one move', () => {
@@ -8,7 +8,7 @@ describe('basic examples', () => {
     const pgn = '1. e4 *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments.length).to.equal(2);
@@ -23,7 +23,7 @@ describe('basic examples', () => {
     const pgn = '1. e4 e5 *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments.length).to.equal(3);
@@ -38,7 +38,7 @@ describe('basic examples', () => {
     const pgn = '1. e4 1-0';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments.length).to.equal(2);
@@ -55,7 +55,7 @@ describe('basic examples', () => {
     ];
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments.length).to.equal(3);
@@ -75,7 +75,7 @@ describe('basic examples', () => {
     ];
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments.length).to.equal(3);
@@ -97,7 +97,7 @@ describe('basic examples', () => {
     ];
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments.length).to.equal(3);
@@ -114,7 +114,7 @@ describe('invalid PGN', () => {
     const pgn = '1. e5 *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments.length).to.equal(0);
@@ -127,7 +127,7 @@ describe('with comments', () => {
     const pgn = '1. e4 {one of the most popular openings for white} *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[1].move).to.equal('e4');
@@ -141,7 +141,7 @@ describe('with comments', () => {
     const pgn = '{one of the most popular openings for white} 1. e4 e5 *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[0].move).to.equal(undefined);
@@ -158,7 +158,7 @@ describe('with comments', () => {
     const pgn = '1. e4 e5 {one of the most popular openings :)} *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[2].move).to.equal('e5');
@@ -170,7 +170,7 @@ describe('with comments', () => {
     const pgn = '1. f4 e6 {with the idea 2. g4 Qh4# 0-1} *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[2].move).to.equal('e6');
@@ -182,7 +182,7 @@ describe('with comments', () => {
     const pgn = '{[%evp 0,1,29999,-30000]} 1. e4 *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[0].comment).to.be.undefined;
@@ -196,7 +196,7 @@ describe('with shapes', () => {
     const pgn = '1. e4 {[%csl Ge4]} *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[1].shapes[0].brush).to.equal('green');
@@ -208,7 +208,7 @@ describe('with shapes', () => {
     const pgn = '1. e4 {[%csl Yd5,Yf5]} *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[1].shapes[0].brush).to.equal('yellow');
@@ -222,7 +222,7 @@ describe('with shapes', () => {
     const pgn = '1. e4 {[%cal Rd1h5]} *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[1].shapes[0].brush).to.equal('red');
@@ -235,7 +235,7 @@ describe('with shapes', () => {
     const pgn = '1. e4 {[%csl Ge4] [%csl Yd1h5] [%csl Rf1a6]} *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[1].shapes[0].brush).to.equal('green');
@@ -250,7 +250,7 @@ describe('with shapes', () => {
     ];
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[0].shapes[0].brush).to.equal('yellow');
@@ -264,7 +264,7 @@ describe('with variations', () => {
     const pgn = '1. e4 (1. d4) 1... e5 *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[1].move).to.equal('e4');
@@ -280,7 +280,7 @@ describe('with variations', () => {
     const pgn = '1. e4 e5 2. Nf3 (2. Bc4) 2... Nc6 *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
     const depths = moments
       .filter(({ depth }) => depth)
       .map(({ depth }) => depth);
@@ -296,7 +296,7 @@ describe('with variations', () => {
     const pgn = '1. e4 e5 (1... c5) 2. Nf3 (2. Bc4) 2... Nc6 *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
     const depths = moments
       .filter(({ depth }) => depth)
       .map(({ depth }) => depth);
@@ -312,7 +312,7 @@ describe('with variations', () => {
     const pgn = '1. e4 c5 (1... e6 {the french defence}) 2. Nf3 *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[4].move).to.equal('e6');
@@ -326,7 +326,7 @@ describe('with comments and variations', () => {
     const pgn = '1. e4 e5 ({the scandinavian defence} 1... d5) *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[3].comment).to.equal('the scandinavian defence');
@@ -334,12 +334,12 @@ describe('with comments and variations', () => {
 });
 
 describe('with consecutive variations', () => {
-  it("consecutive variantions after white's first move", () => {
+  it("consecutive variations after white's first move", () => {
     // Arrange
     const pgn = '1. e4 e5 (1... d5) (1... c5) 2. Nf3 *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[2].move).to.equal('e5');
@@ -363,7 +363,7 @@ describe('everything put together', () => {
     ];
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[0].comment).to.equal(
@@ -404,7 +404,7 @@ describe('everything put together', () => {
     ];
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[0].shapes[0].brush).to.equal('red');
@@ -428,7 +428,7 @@ describe('everything put together', () => {
     ];
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[0].fen).to.equal(
@@ -444,7 +444,7 @@ describe('special cases', () => {
     const pgn = '1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. 0-0 *';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[7].move).to.equal('O-O');
@@ -456,7 +456,7 @@ describe('special cases', () => {
       '1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4 f6) (2... Bc5) (2... h5) 3. Bb5 1-0';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[10].move).to.equal('Bc5');
@@ -468,7 +468,7 @@ describe('special cases', () => {
       '1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4 f6 (3... Nf6) (3... h6)) (2... Bc5) (2... h5) 1-0';
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[14].move).to.equal('Bc5');
@@ -503,7 +503,7 @@ describe('real chess games', () => {
     ];
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[111].move).to.equal('Rxe6');
@@ -536,7 +536,7 @@ describe('real chess games', () => {
     ];
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[65].move).to.equal('Rc1');
@@ -573,7 +573,7 @@ describe('real chess games', () => {
     ];
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[97].move).to.equal('b6');
@@ -619,7 +619,7 @@ describe('real chess games', () => {
     ];
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[286].move).to.equal('Rd7');
@@ -653,10 +653,24 @@ describe('real chess games', () => {
     ];
 
     // Act
-    const moments = parser(pgn);
+    const moments = flat(pgn);
 
     // Assert
     expect(moments[86].move).to.equal('Bf7+');
     expect(moments.length).to.equal(87);
+  });
+});
+
+describe('chess variants as tree', () => {
+  it('with multiple variations as a tree', () => {
+    // Arrange
+    const pgn = '1. e4 e5 (1... c5) 2. Nf3 (2. Bc4) 2... Nc6 *';
+
+    // Act
+    const moments = tree(pgn);
+
+    // Assert
+    expect(moments.length).to.equal(5);
+    expect(moments[0][1].move).to.equal('e4');
   });
 });
