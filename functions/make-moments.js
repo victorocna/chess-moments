@@ -26,7 +26,7 @@ const make = (sloppyPgn) => {
     store.depth = depth;
 
     // parse current moves with the computed FEN
-    const moments = parser(moves, store.fen, depth);
+    const moments = parser(chess, moves, store.fen, depth);
 
     // set history for the current depth
     history.set(depth, fen.history(moments, history, depth));

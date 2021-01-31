@@ -1,10 +1,8 @@
-const { Chess } = require('chess.js');
 const { initial } = require('./fen');
 const pgn = require('./pgn');
 const moment = require('./moment');
 
-module.exports = (moves, fen = initial, depth = 1) => {
-  const chess = new Chess();
+module.exports = (chess, moves, fen = initial, depth = 1) => {
   const loaded = chess.load_pgn(pgn.build(moves, fen));
   if (!loaded) {
     return [];
