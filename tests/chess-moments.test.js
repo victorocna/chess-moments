@@ -1,4 +1,4 @@
-const { flat, tree } = require('.');
+const { flat, tree } = require('..');
 const { expect } = require('chai');
 const { isEqual } = require('lodash');
 
@@ -672,5 +672,46 @@ describe('chess variants as tree', () => {
     // Assert
     expect(moments.length).to.equal(5);
     expect(moments[0][1].move).to.equal('e4');
+  });
+});
+
+describe('Edge cases', () => {
+  it('No moves to decode', () => {
+    const pgn = [
+      '[Event "Fundamentals JL part 2: CONCEPT 18: ISOLATED PAWNS"]',
+      '[Site "lichess.org"]',
+      '[Date "2024.11.15"]',
+      '[White "concept:"]',
+      '[Black "isolated pawns"]',
+      '[Result "*"]',
+      '[Annotator "https://lichess.org/@/RoyalFlushDraw"]',
+      '[FEN "r1b2rk1/pp3ppp/5n2/3pq3/3N4/2PB4/PP3PPP/R2Q1RK1 w - - 0 15"]',
+      '[Variant "From Position"]',
+      '[ECO "?"]',
+      '[Opening "?"]',
+      '[StudyName "Pawn play: part 1"]',
+      '[ChapterName "CONCEPT 5: ISOLATED PAWNS (red light)"]',
+      '[SetUp "1"]',
+      '',
+      '{ Concept:',
+      '- the d5 pawn is isolated because there are no other black pawns on the files next to it (c and e files)',
+      '',
+      'Strategy:',
+      '- trade minor pieces and keep heavy pieces (ideally)',
+      '- pressure the isolated pawn with your heavy pieces',
+      '',
+      'Key takeaway:',
+      '* isolated pawns are vulnerable much like a turtle that has flipped onto its back!',
+      '}',
+      '{ [%csl Rd5][%cal Be8e1,Bc8c1] }',
+      '*',
+    ];
+
+    // Act
+    const moments = tree(pgn);
+
+    // Assert
+    expect(moments.length).to.equal(1);
+    expect(moments[0][0]).to.be.undefined;
   });
 });

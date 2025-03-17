@@ -1,5 +1,7 @@
+const decodeMoves = require('./decode-moves');
+
 module.exports = (moves, fen) => {
-  const decodedMoves = decodeURIComponent(moves);
+  const decodedMoves = decodeMoves(moves);
   const pgn = [
     `[FEN "${fen}"]`, // mandatory header info
     '[SetUp "1"]', // mandatory header info
