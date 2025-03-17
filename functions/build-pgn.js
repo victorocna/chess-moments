@@ -1,7 +1,9 @@
 const decodeMoves = require('./decode-moves');
 
 module.exports = (moves, fen) => {
-  const decodedMoves = decodeMoves(moves);
+  // Remove opposing brackets and whitespace
+  const decodedMoves = decodeMoves(moves).replace(/}\s*{/g, '');
+
   const pgn = [
     `[FEN "${fen}"]`, // mandatory header info
     '[SetUp "1"]', // mandatory header info

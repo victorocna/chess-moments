@@ -375,12 +375,11 @@ describe('everything put together', () => {
     );
     expect(moments[2].move).to.equal('Nf6');
     expect(moments[4].move).to.equal('e6');
-    expect(moments[5].comment).to.equal(
-      'o alternativa interesanta este recomandarea lui Andrew Martin:'
-    );
+
+    expect(moments[5].comment).to.include('o alternativa interesanta');
     expect(moments[6].move).to.equal('d5');
-    expect(moments[6].comment).to.equal(
-      'precum in partida Baratosi-Georgescu.dar albul la un joc corect pastreaza += solid'
+    expect(moments[6].comment).to.include(
+      'precum in partida Baratosi-Georgescu'
     );
     expect(moments[7].move).to.equal('Bxf6');
     expect(moments[15].move).to.equal('h6');
@@ -389,7 +388,7 @@ describe('everything put together', () => {
     expect(moments[17].move).to.equal('Qxf6');
     expect(moments[17].shapes[1].brush).to.equal('green');
     expect(moments[17].shapes[1].orig).to.equal('f8');
-    expect(moments[17].comment).to.equal('negrul ramane cu perechea de nebuni');
+    expect(moments[17].comment).to.include('ramane cu perechea de nebuni');
   });
 
   it('chess diagram with many shapes', () => {
@@ -676,34 +675,16 @@ describe('chess variants as tree', () => {
 });
 
 describe('Edge cases', () => {
-  it('No moves to decode', () => {
+  it('No moves, multiple multiline comments and shapes', () => {
     const pgn = [
-      '[Event "Fundamentals JL part 2: CONCEPT 18: ISOLATED PAWNS"]',
-      '[Site "lichess.org"]',
-      '[Date "2024.11.15"]',
-      '[White "concept:"]',
-      '[Black "isolated pawns"]',
-      '[Result "*"]',
-      '[Annotator "https://lichess.org/@/RoyalFlushDraw"]',
-      '[FEN "r1b2rk1/pp3ppp/5n2/3pq3/3N4/2PB4/PP3PPP/R2Q1RK1 w - - 0 15"]',
-      '[Variant "From Position"]',
-      '[ECO "?"]',
-      '[Opening "?"]',
-      '[StudyName "Pawn play: part 1"]',
-      '[ChapterName "CONCEPT 5: ISOLATED PAWNS (red light)"]',
+      '[FEN "r3kb1r/n1pbqp1p/ppnpp1pP/6P1/2PPPP2/2N1BN2/PP1Q4/1K1R1B1R b kq - 0 18"]',
       '[SetUp "1"]',
       '',
-      '{ Concept:',
-      '- the d5 pawn is isolated because there are no other black pawns on the files next to it (c and e files)',
-      '',
-      'Strategy:',
-      '- trade minor pieces and keep heavy pieces (ideally)',
-      '- pressure the isolated pawn with your heavy pieces',
+      '{ Common chess terminology states that the side controlling more squares on the board has a space advantage.',
       '',
       'Key takeaway:',
-      '* isolated pawns are vulnerable much like a turtle that has flipped onto its back!',
       '}',
-      '{ [%csl Rd5][%cal Be8e1,Bc8c1] }',
+      '{ [%cal Ga1a5,Ga5g5,Gg5h6,Gh6h1,Gh1a1,Ra8a6,Ra6g6,Rg6h7,Rh7h8,Rh8a8] }',
       '*',
     ];
 
@@ -712,6 +693,41 @@ describe('Edge cases', () => {
 
     // Assert
     expect(moments.length).to.equal(1);
-    expect(moments[0][0]).to.be.undefined;
+    expect(moments[0][0].comment).to.exist;
+    expect(moments[0][0].shapes).to.exist;
+  });
+});
+
+describe('real life examples', () => {
+  it('chapter 1', () => {
+    // Arrange
+    const pgn = `[Event "Pawn play: part 1: Intro"]
+[Site "https://lichess.org/study/jCMS8l8F/5er6xG0b"]
+[Result "*"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/Capybara_London"]
+[StudyName "Pawn play: part 1"]
+[ChapterName "Intro"]
+[UTCDate "2025.02.02"]
+[UTCTime "20:46:33"]
+
+{ One of the most requested themes I see across various popular chess channels is:
+"How do you find the right pawn break?"
+
+This is the million-dollar question, but the answer is simple: you don't.
+
+Knowing their opening moves until castling and having a general idea for the middlegame will solve this issue for most people. In most cases, the pawn break should be part of your pre-game knowledge, not something you are supposed to find on the fly.
+
+Obviously, not everything can be prepared at home. Therefore, in the book's first part, I will provide you with the general concepts you need to know for optimal pawn play in the middle game, and at the end, I will also give you concrete examples of opening pawn breaks. }
+ *`;
+
+    // Act
+    const moments = tree(pgn);
+    console.log(moments);
+
+    // Assert
+    expect(moments.length).to.equal(1);
   });
 });

@@ -1,13 +1,20 @@
 const castle = require('./replace-castling');
 
 module.exports = (pgn) => {
+  let processedPgn = null;
+
   if (typeof pgn === 'string') {
-    return castle(pgn.trim());
+    processedPgn = castle(pgn.trim());
+  } else if (Array.isArray(pgn)) {
+    processedPgn = castle(pgn.join('\n').trim());
+  } else {
+    throw new Error('Unsupported PGN type');
   }
 
-  if (Array.isArray(pgn)) {
-    return castle(pgn.join('\n').trim());
-  }
+  // Remove newlines from comments delimited by curly braces
+  processedPgn = processedPgn.replace(/\{[^}]*\}/g, (match) => {
+    return match.replace(/\n/g, '\\n');
+  });
 
-  throw new Error('Unsupported PGN type');
+  return processedPgn;
 };

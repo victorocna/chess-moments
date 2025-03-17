@@ -3,10 +3,8 @@ const brush = require('./brush');
 module.exports = (comment) => {
   try {
     const draw = [];
-    const shapeComments = comment
-      .split(']')
-      .map((it) => it.trim())
-      .filter((it) => it.indexOf('[') === 0);
+    // Find all shape comments
+    const shapeComments = comment.match(/\[.*?\]/g);
 
     for (const shapeComment of shapeComments) {
       // transform "[%csl Ya7" into "Ya7"
