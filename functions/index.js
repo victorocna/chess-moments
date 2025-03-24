@@ -9,6 +9,7 @@ const prepare = require('./prepare');
 const prettify = require('./prettify');
 const shape = require('./shape');
 const split = require('./split');
+const train = require('./train');
 const tree = require('./tree');
 
 module.exports = {
@@ -23,5 +24,6 @@ module.exports = {
   prettify,
   shape,
   split,
+  train,
   tree,
 };
