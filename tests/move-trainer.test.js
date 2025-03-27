@@ -1,4 +1,5 @@
-const { train } = require('..');
+const { flatten } = require('lodash');
+const { train, flat } = require('..');
 const { expect } = require('chai');
 
 /**
@@ -8,7 +9,7 @@ const { expect } = require('chai');
  * After the specified move
  */
 
-describe('basic move trainer', () => {
+describe.only('basic move trainer', () => {
   it('clears all sidelines from the tree', () => {
     // Arrange
     const pgn = '1. e4 e5 2. Nf3 (2. Bc4) 2... Nc6 3. Bb5 *';
@@ -17,7 +18,7 @@ describe('basic move trainer', () => {
     const moments = train(pgn);
 
     // Assert
-    const momentsWithMoves = moments.filter((moment) => moment.move);
+    const momentsWithMoves = flatten(moments).filter((moment) => moment.move);
     expect(momentsWithMoves.length).to.equal(5);
   });
 
@@ -28,9 +29,10 @@ describe('basic move trainer', () => {
     // Act
     const moveIndex = 8; // 3. Bb5
     const moments = train(pgn, moveIndex);
+    // console.log(moments);
 
     // Assert
-    const momentsWithMoves = moments.filter((moment) => moment.move);
+    const momentsWithMoves = flatten(moments).filter((moment) => moment.move);
     expect(momentsWithMoves.length).to.equal(8);
   });
 
@@ -43,7 +45,7 @@ describe('basic move trainer', () => {
     const moments = train(pgn, moveIndex);
 
     // Assert
-    const momentsWithMoves = moments.filter((moment) => moment.move);
+    const momentsWithMoves = flatten(moments).filter((moment) => moment.move);
     expect(momentsWithMoves.length).to.equal(7);
   });
 
@@ -56,7 +58,23 @@ describe('basic move trainer', () => {
     const moments = train(pgn, moveIndex);
 
     // Assert
-    const momentsWithMoves = moments.filter((moment) => moment.move);
+    const momentsWithMoves = flatten(moments).filter((moment) => moment.move);
     expect(momentsWithMoves.length).to.equal(7);
+  });
+
+  it.only('keep both sidelines when the move index is "e5"', () => {
+    // Arrange
+    const pgn = '1. e4 e6 2. d4 d5 3. Nc3 (3. Nd2 c5) (3. e5 c5 4. c3) 3... Nf6 *';
+
+    // Act
+    const moveIndex = 10; // 3. e5
+    const moments = train(pgn, moveIndex);
+
+    console.log(moments)
+
+    // Assert
+    const momentsWithMoves = flatten(moments).filter((moment) => moment.move);
+    expect(momentsWithMoves.length).to.equal(10);
+    expect(momentsWithMoves.find((m) => m.move === 'c3').hidden).to.be.true;
   });
 });

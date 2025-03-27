@@ -42,6 +42,11 @@ The `depth` key delimits between variants and subvariants played in the chess ga
 Returns a two level deep array of chess moments.
 The first level splits between variants and subvariants played in the chess game.
 
+### .train()
+
+Returns a two level deep array of chess moments.
+It is useful for hiding future moves in chess training.
+
 ## JSON output
 
 The basic PGN file `1. e4 e5 *` will generated the following chess moments in JSON format:
