@@ -40,6 +40,9 @@ const train = (sloppyPgn, moveIndex) => {
     filtered.forEach((moment) => {
       if (moment.index > current.index) {
         moment.hidden = true;
+        // Also remove comments and shapes for hidden moves
+        delete moment.comment;
+        delete moment.shapes;
       }
     });
 
