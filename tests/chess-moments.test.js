@@ -725,7 +725,6 @@ Obviously, not everything can be prepared at home. Therefore, in the book's firs
 
     // Act
     const moments = tree(pgn);
-    console.log(moments);
 
     // Assert
     expect(moments.length).to.equal(1);

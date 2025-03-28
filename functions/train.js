@@ -1,8 +1,8 @@
 const { flatten } = require('lodash');
-const splitByMoveIndex = require('./split-by-move-index');
+const splitByMoveIndex = require('./split-by-move');
 const tree = require('./tree');
 
-const train = (sloppyPgn, moveIndex) => {
+const train = (sloppyPgn, fen) => {
   // Tree is an array of array depths
   const moments = tree(sloppyPgn);
 
@@ -10,7 +10,7 @@ const train = (sloppyPgn, moveIndex) => {
   const training = [];
 
   // Remove sidelines (depth > 1) when no move index is specified
-  if (!moveIndex) {
+  if (!fen) {
     for (const innerArray of moments) {
       const hasDepth = innerArray.filter((moment) => moment.depth === 1);
       if (hasDepth.length) {
@@ -20,14 +20,14 @@ const train = (sloppyPgn, moveIndex) => {
     return training;
   }
 
+  // Get the current move from the move index
+  const current = flatten(moments).find((moment) => moment.fen === fen);
+
   // Split the moments into two groups
-  const { before, after } = splitByMoveIndex(moments, moveIndex);
+  const { before, after } = splitByMoveIndex(moments, current);
   for (const innerArray of before) {
     training.push(innerArray);
   }
-
-  // Get the current move from the move index
-  const current = flatten(moments).find((moment) => moment.index === moveIndex);
 
   // Only future moves remaining
   for (const innerArray of after) {
