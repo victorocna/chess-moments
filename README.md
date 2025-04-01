@@ -72,3 +72,10 @@ The basic PGN file `1. e4 e5 *` will generated the following chess moments in JS
   }
 ]
 ```
+
+## Limitations
+
+This package does not support the following features:
+
+- [chess symbol annotations](https://en.wikipedia.org/wiki/Chess_annotation_symbols)
+- chess clock comments are removed
