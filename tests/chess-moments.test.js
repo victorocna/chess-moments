@@ -449,6 +449,17 @@ describe('special cases', () => {
     expect(moments[7].move).to.equal('O-O');
   });
 
+  it('clock comments should be ignored', () => {
+    // Arrange
+    const pgn = '1. d4 { [%clk 3:00:00] } 1... Nf6 { [%clk 3:00:00] } *';
+
+    // Act
+    const moments = flat(pgn);
+
+    // Assert
+    expect(moments[2].comment).to.be.undefined;
+  });
+
   it('multiple subvariants with more than one move', () => {
     // Arrange
     const pgn =
