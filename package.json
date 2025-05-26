@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "files": [
     "index.js",
-    "functions/*.js",
-    "modules/*.tgz"
+    "functions/*.js"
   ],
   "scripts": {
     "test": "mocha",
@@ -24,7 +23,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "chess.js": "file:modules/chess.js-1.2.0.tgz"
+    "chess.js": "github:brobert1/chess.js#feature/chess-annotations-symbols"
   },
   "devDependencies": {
     "chai": "^4.3.7",
