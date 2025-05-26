@@ -1,3 +1,4 @@
 node_modules
 NOTES.txt
 *.tgz
+!modules/*.tgz
