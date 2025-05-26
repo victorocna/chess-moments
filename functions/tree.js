@@ -1,17 +1,21 @@
 const makeMoments = require('./make-moments');
 
 const tree = (sloppyPgn) => {
-  const moments = makeMoments(sloppyPgn);
+  try {
+    const moments = makeMoments(sloppyPgn);
 
-  let index = 0;
-  for (const lines of moments) {
-    for (const moment of lines) {
-      moment.index = index;
-      index++;
+    let index = 0;
+    for (const lines of moments) {
+      for (const moment of lines) {
+        moment.index = index;
+        index++;
+      }
     }
-  }
 
-  return moments;
+    return moments;
+  } catch {
+    return [];
+  }
 };
 
 module.exports = tree;

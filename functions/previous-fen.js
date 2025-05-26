@@ -20,21 +20,24 @@ const previousFen = (history, moves, currentDepth, previousDepth) => {
       return history.get(previousDepth)[0];
     }
 
-    // try the first candidate from the current depth
-    const candidate = history.get(currentDepth)[0];
-    if (matchesFen(moves, candidate)) {
-      return candidate;
-    }
+    const currentHistory = history.get(currentDepth);
+    if (Array.isArray(currentHistory) && currentHistory.length > 0) {
+      // try the first candidate from the current depth
+      const candidate = currentHistory[0];
+      if (matchesFen(moves, candidate)) {
+        return candidate;
+      }
 
-    // try the second candidate from the current depth
-    const second = history.get(currentDepth)[1];
-    if (matchesFen(moves, second)) {
-      return second;
+      // try the second candidate from the current depth
+      const second = currentHistory[1];
+      if (matchesFen(moves, second)) {
+        return second;
+      }
     }
 
     return previousFen(history, moves, currentDepth - 1, previousDepth);
   } catch (err) {
-    return false;
+    return '';
   }
 };
 

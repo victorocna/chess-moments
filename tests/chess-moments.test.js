@@ -14,7 +14,7 @@ describe('basic examples', () => {
     expect(moments.length).to.equal(2);
     expect(moments[1].move).to.equal('e4');
     expect(moments[1].fen).to.equal(
-      'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1'
+      'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1'
     );
   });
 
@@ -29,7 +29,7 @@ describe('basic examples', () => {
     expect(moments.length).to.equal(3);
     expect(moments[2].move).to.equal('e5');
     expect(moments[2].fen).to.equal(
-      'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2'
+      'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'
     );
   });
 
@@ -44,7 +44,7 @@ describe('basic examples', () => {
     expect(moments.length).to.equal(2);
     expect(moments[1].move).to.equal('e4');
     expect(moments[1].fen).to.equal(
-      'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1'
+      'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1'
     );
   });
 
@@ -61,7 +61,7 @@ describe('basic examples', () => {
     expect(moments.length).to.equal(3);
     expect(moments[2].move).to.equal('e5');
     expect(moments[2].fen).to.equal(
-      'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2'
+      'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'
     );
   });
 
@@ -81,7 +81,7 @@ describe('basic examples', () => {
     expect(moments.length).to.equal(3);
     expect(moments[2].move).to.equal('e5');
     expect(moments[2].fen).to.equal(
-      'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2'
+      'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'
     );
   });
 
@@ -103,7 +103,7 @@ describe('basic examples', () => {
     expect(moments.length).to.equal(3);
     expect(moments[2].move).to.equal('e5');
     expect(moments[2].fen).to.equal(
-      'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2'
+      'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'
     );
   });
 });
@@ -395,7 +395,7 @@ describe('everything put together', () => {
     // Arrange
     const pgn = [
       '[SetUp "1"]',
-      '[FEN "8/8/8/8/2k5/1R6/R7/5K2 w - - 0 0"]',
+      '[FEN "8/8/8/8/2k5/1R6/R7/5K2 w - - 0 1"]',
       '',
       '{[%cal Rc4b3,Gb3h3,Ga2g2]} 1. Rh3 Kb4 2. Rg2 Kc4 {[%cal Gg2g4,Gh3h5,Gg4g6, ',
       'Gh5h7,Gg6g8]} 3. Rg4+ Kd5 4. Rh5+ Ke6 5. Rg6+ Kf7 {[%cal Yf7g6]} 6. Ra6 Kg7 ',
