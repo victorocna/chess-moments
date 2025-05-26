@@ -22,6 +22,7 @@ module.exports = (moves, fen = initial, depth = 1) => {
       depth,
       move,
       comment: chess.getComment(),
+      suffix: chess.getSuffix(),
       fen: chess.fen(),
     });
   });

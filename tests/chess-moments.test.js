@@ -258,6 +258,19 @@ describe('with shapes', () => {
   });
 });
 
+describe.only('with suffixes', () => {
+  it('with a suffix after the first move', () => {
+    // Arrange
+    const pgn = '1. c4 {Comment for c4} e5!? {Comment and Suffix for e5} *';
+
+    // Act
+    const moments = flat(pgn);
+
+    // Assert
+    expect(moments[2].suffix).to.equal('!?');
+  });
+});
+
 describe('with variations', () => {
   it('with first move variation', () => {
     // Arrange
