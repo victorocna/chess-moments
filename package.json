@@ -1,6 +1,6 @@
 {
   "name": "chess-moments",
-  "version": "0.11.4-beta.2",
+  "version": "0.11.4-beta.3",
   "description": "PGN parser that transforms PGN files into chess \"moments\"",
   "main": "dist/index.js",
   "files": [
@@ -23,7 +23,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "chess.js": "github:brobert1/chess.js#feature/chess-annotations-symbols"
+    "chess.js": "github:brobert1/chess.js#beta"
   },
   "devDependencies": {
     "chai": "^4.3.7",
