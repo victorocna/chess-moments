@@ -8,7 +8,7 @@ module.exports = (chess, moves, fen = initial, depth = 1) => {
     return [];
   }
 
-  const history = chess.history();
+  const history = chess.history({ verbose: true });
   while (chess.undo()) {
     chess.undo();
   }
@@ -16,12 +16,14 @@ module.exports = (chess, moves, fen = initial, depth = 1) => {
   const comment = chess.get_comment();
   const first = moment.build({ depth, comment, fen: chess.fen() });
 
-  const moments = history.map((move) => {
-    chess.move(move);
+  const moments = history.map((item) => {
+    chess.move(item.san);
 
     return moment.build({
       depth,
-      move,
+      move: item.san,
+      from: item.from,
+      to: item.to,
       comment: chess.get_comment(),
       fen: chess.fen(),
     });
