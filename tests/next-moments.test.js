@@ -2,7 +2,7 @@ const { flat, getNextMoments } = require('..');
 const { expect } = require('chai');
 
 describe('Next moments', () => {
-  it('Mainline only', () => {
+  it('Mainline without sideline', () => {
     // Arrange
     const pgn = '1. e4 e5 2. Nf3 Nc6 *';
     const moments = flat(pgn);

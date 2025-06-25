@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const { fen } = require('../functions');
 
 describe('Previous moments', () => {
-  it.only('Only one move', () => {
+  it('basic PGN with one move', () => {
     // Arrange
     const pgn = '1. e4';
     const moments = flat(pgn);
@@ -16,7 +16,7 @@ describe('Previous moments', () => {
     expect(previous.fen).to.equal(fen.initial);
   });
 
-  it('Mainline only', () => {
+  it('Mainline without sideline', () => {
     // Arrange
     const pgn = '1. e4 e5 2. Nf3 Nc6 *';
     const moments = flat(pgn);
