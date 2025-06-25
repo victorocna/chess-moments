@@ -1,6 +1,6 @@
 {
   "name": "chess-moments",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "description": "PGN parser that transforms PGN files into chess \"moments\"",
   "main": "dist/index.js",
   "files": [
