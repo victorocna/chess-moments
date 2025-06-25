@@ -1,4 +1,12 @@
-const { fen, pgn, flat, train, tree } = require('./functions');
+const {
+  fen,
+  pgn,
+  flat,
+  train,
+  tree,
+  getNextMoments,
+  getPrevMoment,
+} = require('./functions');
 
 module.exports = {
   fen,
@@ -6,4 +14,6 @@ module.exports = {
   flat,
   train,
   tree,
+  getNextMoments,
+  getPrevMoment,
 };

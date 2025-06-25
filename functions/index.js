@@ -1,6 +1,8 @@
 const brush = require('./brush');
 const fen = require('./fen');
 const flat = require('./flat');
+const getNextMoments = require('./get-next-moments');
+const getPrevMoment = require('./get-prev-moment');
 const lines = require('./lines');
 const moment = require('./moment');
 const parser = require('./parser');
@@ -16,6 +18,8 @@ module.exports = {
   brush,
   fen,
   flat,
+  getNextMoments,
+  getPrevMoment,
   lines,
   moment,
   parser,
