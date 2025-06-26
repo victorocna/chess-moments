@@ -6,6 +6,7 @@ const {
   tree,
   getNextMoments,
   getPrevMoment,
+  momentsToPgn,
 } = require('./functions');
 
 module.exports = {
@@ -16,4 +17,5 @@ module.exports = {
   tree,
   getNextMoments,
   getPrevMoment,
+  momentsToPgn,
 };
