@@ -1,7 +1,8 @@
 const { flat, momentsToPgn } = require('..');
 const { expect } = require('chai');
+const { trimPgnHeaders } = require('./functions');
 
-describe('moments to PGN', () => {
+describe.only('moments to PGN', () => {
   it('converts basic chess moments back to PGN', () => {
     // Arrange
     const originalPgn = '1. e4 e5 2. Nf3 Nc6 *';
@@ -71,5 +72,37 @@ describe('moments to PGN', () => {
 
     // Assert
     expect(newPgn).to.equal(originalPgn);
+  });
+
+  it('preserves custom result', () => {
+    // Arrange
+    const originalPgn = '1. e4 e5 2. Qh5 Nc6 3. Qxf7+ *';
+    const moments = flat(originalPgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+
+    // Assert
+    expect(newPgn).to.equal(originalPgn);
+  });
+
+  it('handles PGN with headers using trimPgnHeaders helper', () => {
+    // Arrange
+    const pgn = [
+      '[Event "Test Game"]',
+      '[Site "Chess.com"]',
+      '[Date "2025.06.27"]',
+      '[White "Player1"]',
+      '[Black "Player2"]',
+      '',
+      '1. e4 e5 2. Nf3 Nc6 *',
+    ];
+
+    // Act
+    const moments = flat(pgn);
+    const newPgn = momentsToPgn(moments);
+
+    // Assert
+    expect(newPgn).to.equal(trimPgnHeaders(pgn.join('\n')));
   });
 });
