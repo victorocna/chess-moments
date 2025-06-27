@@ -1,3 +1,5 @@
+const fen = require('./fen');
+
 /**
  * Converts chess moments back to PGN format
  * @param {Array} moments - Array of chess moment objects
@@ -12,6 +14,13 @@ module.exports = (moments) => {
   let currentDepth = 1;
   let variationStack = [];
   let lastMoveAtDepth = new Map(); // Track the last move at each depth
+
+  // Check if we need to add FEN headers for non-standard starting position
+  const initialMoment = moments[0];
+  if (initialMoment && initialMoment.fen && initialMoment.fen !== fen.initial) {
+    pgn += `[SetUp "1"]\n`;
+    pgn += `[FEN "${initialMoment.fen}"]\n\n`;
+  }
 
   for (let i = 0; i < moments.length; i++) {
     const moment = moments[i];
