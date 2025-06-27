@@ -131,7 +131,7 @@ describe('moments to PGN: Basic examples', () => {
   });
 });
 
-describe.only('moments to PGN: Real chess games', () => {
+describe('moments to PGN: Real chess games', () => {
   it('Fischer vs. Andersson', () => {
     // Arrange
     const pgn = [
@@ -143,7 +143,7 @@ describe.only('moments to PGN: Real chess games', () => {
       '[FEN "r2qrbk1/1pp3pp/2n1bp2/p2np3/8/PP1PPN2/1BQNBPPP/R4RK1 w - - 0 13"]',
       '[PlyCount "32"]',
       '',
-      '13. Kh1 $1 {!} (13. d4 exd4 14. Nxd4 Nxd4 15. Bxd4 c5 16. Bxc5 (16. Bb2 Qd7 (',
+      '13. Kh1 {!} (13. d4 exd4 14. Nxd4 Nxd4 15. Bxd4 c5 16. Bxc5 (16. Bb2 Qd7 (',
       '16... f5 17. Bd3 Qg5 18. Nf3 Qh5) 17. Bd3 f5 18. Nc4) 16... Rc8 17. b4 b6)',
       '13... Qd7 14. Rg1 $36 Rad8 15. Ne4 Qf7 16. g4 g6 17. Rg3 $16 Bg7 (17... Nb6 18.',
       'g5 $1 $40) 18. Rag1 Nb6 19. Nc5 Bc8 20. Nh4 (20. g5 f5) 20... Nd7 $6 (20... Kh8',
@@ -160,9 +160,8 @@ describe.only('moments to PGN: Real chess games', () => {
 
     // Act
     const newPgn = momentsToPgn(moments);
-    console.log(newPgn);
 
     // Assert
-    expect(newPgn).to.include('13. d4 exd4 14. Nxd4 Nxd4');
+    expect(newPgn).to.include('13. Kh1 {!} (13. d4 exd4 14. Nxd4 Nxd4');
   });
 });

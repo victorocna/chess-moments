@@ -13,7 +13,6 @@ module.exports = (moments) => {
   let pgn = '';
   let currentDepth = 1;
   let variationStack = [];
-  let lastMoveAtDepth = new Map(); // Track the last move at each depth
 
   // Check if we need to add FEN headers for non-standard starting position
   const initialMoment = moments[0];
@@ -47,31 +46,23 @@ module.exports = (moments) => {
     // For black moves, the move number is fullmove number - 1 (since fullmove increments after black's move)
     const moveNumber = moveWasByWhite ? fullmoveNumber : fullmoveNumber - 1;
 
-    // Check if we need to close and reopen a variation (multiple variations at same depth)
-    if (depth > 1 && lastMoveAtDepth.has(depth) && currentDepth === depth) {
-      // Close current variation and start a new one at the same level
-      pgn += ') (';
-    }
     // Handle depth changes (variations)
-    else if (depth > currentDepth) {
+    if (depth > currentDepth) {
       // Starting a new variation
-      variationStack.push({
-        depth: currentDepth,
-      });
+      variationStack.push(currentDepth);
       pgn += ' (';
       currentDepth = depth;
     } else if (depth < currentDepth) {
-      // Ending variation(s)
-      while (variationStack.length > 0 && depth <= currentDepth) {
-        const context = variationStack.pop();
+      // Ending variation(s) - close as many as needed to get to the right depth
+      while (currentDepth > depth) {
+        variationStack.pop();
         pgn += ')';
-        currentDepth = context.depth;
+        currentDepth--;
       }
-      pgn += ' ';
+      if (pgn.endsWith(')')) {
+        pgn += ' ';
+      }
     }
-
-    // Record that we've seen a move at this depth
-    lastMoveAtDepth.set(depth, true);
 
     // Add move number for white moves or when starting a variation
     if (moveWasByWhite || (depth > 1 && pgn.endsWith('('))) {
