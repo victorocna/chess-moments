@@ -1,11 +1,11 @@
-const fen = require('./fen');
+const fen = require('../fen');
 
 /**
  * Converts chess moments back to PGN format
  * @param {Array} moments - Array of chess moment objects
  * @returns {String} PGN string
  */
-module.exports = (moments) => {
+const momentsToPgn = (moments) => {
   if (!Array.isArray(moments) || moments.length === 0) {
     return '';
   }
@@ -153,3 +153,5 @@ function getBrushCode(brush) {
   };
   return brushCodes[brush] || 'G';
 }
+
+module.exports = momentsToPgn;
