@@ -1,4 +1,5 @@
 const fen = require('../fen');
+const { getBrushCode } = require('../helpers');
 
 /**
  * Converts chess moments back to PGN format
@@ -140,18 +141,5 @@ const momentsToPgn = (moments) => {
 
   return pgn.trim();
 };
-
-/**
- * Convert brush color name to PGN color code
- */
-function getBrushCode(brush) {
-  const brushCodes = {
-    green: 'G',
-    red: 'R',
-    blue: 'B',
-    yellow: 'Y',
-  };
-  return brushCodes[brush] || 'G';
-}
 
 module.exports = momentsToPgn;

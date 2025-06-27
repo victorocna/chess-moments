@@ -1,4 +1,3 @@
-const brush = require('./brush');
 const fen = require('./fen');
 const flat = require('./flat');
 const getNextMoments = require('./extras/get-next-moments');
@@ -16,7 +15,6 @@ const train = require('./train');
 const tree = require('./tree');
 
 module.exports = {
-  brush,
   fen,
   flat,
   getNextMoments,

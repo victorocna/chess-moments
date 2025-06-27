@@ -1,4 +1,4 @@
-const brush = require('./brush');
+const { getBrushColor } = require('./helpers');
 
 module.exports = (comment) => {
   try {
@@ -16,7 +16,7 @@ module.exports = (comment) => {
 
       for (const target of shapes.join('').split(',')) {
         draw.push({
-          brush: brush(target.substr(0, 1)),
+          brush: getBrushColor(target.substr(0, 1)),
           orig: target.substr(1, 2),
           dest: target.substr(3, 2),
         });
