@@ -24,17 +24,30 @@ const momentsToPgn = (moments) => {
 
   for (let i = 0; i < moments.length; i++) {
     const moment = moments[i];
+    const depth = moment.depth || 1;
 
-    // Skip moments without moves (initial position or variation breaks)
+    // Handle moments without moves (initial position or variation breaks)
     if (!moment.move) {
+      // If this is a variation marker (depth > 1) and not the initial position
+      if (depth > 1 && i > 0) {
+        // Check if we need to start a new variation at the same depth
+        if (depth === currentDepth) {
+          // Close current variation and start a new one at the same level
+          pgn += ') (';
+        } else if (depth > currentDepth) {
+          // Starting a new variation at a deeper level
+          variationStack.push(currentDepth);
+          pgn += ' (';
+          currentDepth = depth;
+        }
+      }
+
       // Add initial comment if present
       if (moment.comment) {
         pgn += `{${moment.comment}} `;
       }
       continue;
     }
-
-    const depth = moment.depth || 1;
 
     // Determine who made this move and what move number it is from the FEN
     const fenParts = moment.fen.split(' ');
