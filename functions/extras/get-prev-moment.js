@@ -29,7 +29,8 @@ const getPrevMoment = (moments, current) => {
         const fullmove = Number(moment.fen.split(' ')[5]);
 
         if (
-          moment.depth === current.depth - 1 &&
+          (moment.depth === current.depth - 1 ||
+            moment.depth === current.depth) &&
           activeColor === 'b' &&
           fullmove === current.fullmove - 1
         ) {
@@ -47,7 +48,8 @@ const getPrevMoment = (moments, current) => {
         const fullmove = Number(moment.fen.split(' ')[5]);
 
         if (
-          moment.depth === current.depth - 1 &&
+          (moment.depth === current.depth - 1 ||
+            moment.depth === current.depth) &&
           activeColor === 'w' &&
           fullmove === current.fullmove
         ) {

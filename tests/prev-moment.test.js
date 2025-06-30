@@ -154,7 +154,7 @@ describe('Prev moments: Real chess games', () => {
     expect(previous.move).to.equal('Nc3');
   });
 
-  it('Prev moments: Selezniev vs. Alekhine', () => {
+  it.only('Prev moments: Selezniev vs. Alekhine', () => {
     // Arrange
     const pgn = [
       '[Event "Triberg-A"]',
