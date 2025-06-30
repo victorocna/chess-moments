@@ -12,7 +12,7 @@ const momentsToPgn = (moments) => {
   // Return empty PGN if no moments are provided
   if (!Array.isArray(moments) || moments.length === 0) {
     pgn += `[SetUp "1"]\n`;
-    pgn += `[FEN "${initialMoment.fen}"]\n\n`;
+    pgn += `[FEN "${fen.initial}"]\n\n`;
     pgn += '*';
     return pgn;
   }
