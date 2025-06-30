@@ -146,7 +146,7 @@ describe('real chess games', () => {
     expect(next[1].move).to.equal('Bd6');
   });
 
-  it.only('Selezniev vs. Alekhine', () => {
+  it('Selezniev vs. Alekhine', () => {
     // Arrange
     const pgn = [
       '[Event "Triberg-A"]',
