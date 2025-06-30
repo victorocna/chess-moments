@@ -2,7 +2,7 @@ const { flat, getNextMoments } = require('..');
 const { expect } = require('chai');
 
 describe('Next moments', () => {
-  it('Mainline without sideline', () => {
+  it('Next moments: Mainline without sideline', () => {
     // Arrange
     const pgn = '1. e4 e5 2. Nf3 Nc6 *';
     const moments = flat(pgn);
@@ -15,7 +15,7 @@ describe('Next moments', () => {
     expect(next[0].move).to.equal('Nc6');
   });
 
-  it('Mainline and sideline for black', () => {
+  it('Next moments: Mainline and sideline for black', () => {
     // Arrange
     const pgn = '1. e4 e5 2. Nf3 Nc6 (2... c5) *';
     const moments = flat(pgn);
@@ -29,7 +29,7 @@ describe('Next moments', () => {
     expect(next[1].move).to.equal('c5');
   });
 
-  it('Mainline and sideline for white', () => {
+  it('Next moments: Mainline and sideline for white', () => {
     // Arrange
     const pgn = '1. e4 e5 2. Nf3 (2. Bc4) *';
     const moments = flat(pgn);
@@ -43,7 +43,7 @@ describe('Next moments', () => {
     expect(next[1].move).to.equal('Bc4');
   });
 
-  it('Mainline and multiple sidelines for black', () => {
+  it('Next moments: Mainline and multiple sidelines for black', () => {
     // Arrange
     const pgn = '1. e4 e5 (1... c5) (1... d6) *';
     const moments = flat(pgn);
@@ -57,7 +57,7 @@ describe('Next moments', () => {
     expect(next[2].move).to.equal('d6');
   });
 
-  it('Mainline and multiple sidelines for white', () => {
+  it('Next moments: Mainline and multiple sidelines for white', () => {
     // Arrange
     const pgn = '1. e4 e5 2. Nf3 Nc6 3. Bc4 (3. Bb5) (3. d4) *';
     const moments = flat(pgn);
@@ -72,8 +72,8 @@ describe('Next moments', () => {
   });
 });
 
-describe('real chess games', () => {
-  it('Fischer vs. Andersson', () => {
+describe('Next moments: Real chess games', () => {
+  it('Next moments: Fischer vs. Andersson', () => {
     // Arrange
     const pgn = [
       '[Event "Siegen exh"]',
@@ -108,7 +108,7 @@ describe('real chess games', () => {
     expect(next[1].move).to.equal('Nb6');
   });
 
-  it('English Attack - Rapport-Jobava System', () => {
+  it('Next moments:English Attack - Rapport-Jobava System', () => {
     // Arrange
     const pgn = [
       '[Event "Starter pack prototype: English Attack"]',
@@ -146,7 +146,7 @@ describe('real chess games', () => {
     expect(next[1].move).to.equal('Bd6');
   });
 
-  it('Selezniev vs. Alekhine', () => {
+  it('Next moments: Selezniev vs. Alekhine', () => {
     // Arrange
     const pgn = [
       '[Event "Triberg-A"]',
@@ -173,19 +173,22 @@ describe('real chess games', () => {
 
     // Act
     const moments = flat(pgn);
-    const currentOne = moments.find((m) => m.move === 'Nc5' && m.depth === 1);
-    const nextOne = getNextMoments(moments, currentOne);
+    let current;
+    let next;
+
+    current = moments.find((m) => m.move === 'Nc5' && m.depth === 1);
+    next = getNextMoments(moments, current);
 
     // Assert
-    expect(nextOne[0].move).to.equal('Nb3');
-    expect(nextOne[1]).to.be.undefined;
+    expect(next[0].move).to.equal('Nb3');
+    expect(next[1]).to.be.undefined;
 
     // Act again
-    const currentTwo = moments.find((m) => m.move === 'Nd7' && m.depth === 1);
-    const nextTwo = getNextMoments(moments, currentTwo);
+    current = moments.find((m) => m.move === 'Nd7' && m.depth === 1);
+    next = getNextMoments(moments, current);
 
     // Assert
-    expect(nextTwo[0].move).to.equal('c5');
-    expect(nextTwo[1]).to.be.undefined;
+    expect(next[0].move).to.equal('c5');
+    expect(next[1]).to.be.undefined;
   });
 });

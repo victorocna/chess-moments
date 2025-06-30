@@ -2,8 +2,8 @@ const { flat, getPrevMoment } = require('..');
 const { expect } = require('chai');
 const { fen } = require('../functions');
 
-describe('Previous moments', () => {
-  it('basic PGN with one move', () => {
+describe('Prev moments', () => {
+  it('Prev moments: Basic PGN with one move', () => {
     // Arrange
     const pgn = '1. e4';
     const moments = flat(pgn);
@@ -16,7 +16,7 @@ describe('Previous moments', () => {
     expect(previous.fen).to.equal(fen.initial);
   });
 
-  it('Mainline without sideline', () => {
+  it('Prev moments: Mainline without sideline', () => {
     // Arrange
     const pgn = '1. e4 e5 2. Nf3 Nc6 *';
     const moments = flat(pgn);
@@ -29,7 +29,7 @@ describe('Previous moments', () => {
     expect(previous.move).to.equal('Nf3');
   });
 
-  it('Mainline and sideline for black', () => {
+  it('Prev moments: Mainline and sideline for black', () => {
     // Arrange
     const pgn = '1. e4 e5 (1... c5) *';
     const moments = flat(pgn);
@@ -42,7 +42,7 @@ describe('Previous moments', () => {
     expect(previous.move).to.equal('e4');
   });
 
-  it('Mainline and sideline for white', () => {
+  it('Prev moments: Mainline and sideline for white', () => {
     // Arrange
     const pgn = '1. e4 e5 2. Nf3 Nc6 3. Bc4 (3. Bb5) *';
     const moments = flat(pgn);
@@ -55,7 +55,7 @@ describe('Previous moments', () => {
     expect(previous.move).to.equal('Nc6');
   });
 
-  it('Mainline and multiple sidelines for black', () => {
+  it('Prev moments: Mainline and multiple sidelines for black', () => {
     // Arrange
     const pgn = '1. e4 e5 (1... c5) (1... d6) *';
     const moments = flat(pgn);
@@ -68,7 +68,7 @@ describe('Previous moments', () => {
     expect(previous.move).to.equal('e4');
   });
 
-  it('Mainline and multiple sidelines for white', () => {
+  it('Prev moments: Mainline and multiple sidelines for white', () => {
     // Arrange
     const pgn = '1. e4 e5 2. Nf3 Nc6 3. Bc4 (3. Bb5) (3. d4) *';
     const moments = flat(pgn);
@@ -82,8 +82,8 @@ describe('Previous moments', () => {
   });
 });
 
-describe('real chess games', () => {
-  it('Fischer vs. Andersson', () => {
+describe('Prev moments: Real chess games', () => {
+  it('Prev moments: Fischer vs. Andersson', () => {
     // Arrange
     const pgn = [
       '[Event "Siegen exh"]',
@@ -117,7 +117,7 @@ describe('real chess games', () => {
     expect(previous.move).to.equal('g4');
   });
 
-  it('English Attack - Rapport-Jobava System', () => {
+  it('Prev moments: English Attack - Rapport-Jobava System', () => {
     // Arrange
     const pgn = [
       '[Event "Starter pack prototype: English Attack"]',
@@ -152,5 +152,39 @@ describe('real chess games', () => {
 
     // Assert
     expect(previous.move).to.equal('Nc3');
+  });
+
+  it('Prev moments: Selezniev vs. Alekhine', () => {
+    // Arrange
+    const pgn = [
+      '[Event "Triberg-A"]',
+      '[Site "Triberg"]',
+      '[Date "1921.07.09"]',
+      '[Round "3"]',
+      '[White "Selezniev, Alexey Sergeevich"]',
+      '[Black "Alekhine, Alexander"]',
+      '[Result "0-1"]',
+      '[SetUp "1"]',
+      '[FEN "1r3rk1/2qnppb1/b2p2pp/p1pP4/P1P5/3B1NP1/2QBPP1P/1R3RK1 b - - 0 20"]',
+      '[PlyCount "16"]',
+      '[EventDate "1921.07.07"]',
+      '',
+      '20... Rb4 $1 {[%csl Rc4][%cal Gg7b2] !} 21. Bxb4 cxb4 22. Nd2 Nc5 (22... Rc8)',
+      '23. Nb3 Nd7 $2 {?} (23... Nxa4 $6 24. Ra1 Nc5 25. Nxa5 Bxa1 26. Rxa1 Kg7 27.',
+      'Nc6) (23... Rc8 $1 24. Nxc5 Qxc5 25. Rfc1 Bc3 26. Qb3 Bxc4 27. Bxc4 Qxc4 28.',
+      'Qxc4 Rxc4 $17) 24. c5 $1 {!} Bxd3 25. exd3 $1 {!} (25. Qxd3 dxc5) 25... dxc5',
+      '26. Rfe1 (26. Qc4 Qd6 27. Nxa5 Ne5 28. Qb3 Ra8) 26... Ne5 27. Re3 (27. Qxc5',
+      'Nf3+ 28. Kf1 Qxc5 29. Nxc5 Nd2+ 30. Ke2 Nxb1 31. Rxb1 Rd8 $1) 27... Rc8 28. Rc1',
+      '$16 {Black has won the game after a long fight.} 0-1',
+      '',
+    ];
+
+    // Act
+    const moments = flat(pgn);
+    const current = moments.find((m) => m.move === 'c5' && m.depth === 1);
+    const previous = getPrevMoment(moments, current);
+
+    // Assert
+    expect(previous.move).to.equal('Nd7');
   });
 });

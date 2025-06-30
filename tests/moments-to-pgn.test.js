@@ -47,7 +47,7 @@ describe('moments to PGN: Basic examples', () => {
     const newPgn = momentsToPgn(moments);
 
     // Assert
-    expect(newPgn).to.equal('');
+    expect(newPgn).to.include('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
   });
 
   it('handles moments with shapes', () => {
