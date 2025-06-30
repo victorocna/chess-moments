@@ -7,11 +7,16 @@ const { getBrushCode } = require('../helpers');
  * @returns {String} PGN string
  */
 const momentsToPgn = (moments) => {
+  let pgn = '';
+
+  // Return empty PGN if no moments are provided
   if (!Array.isArray(moments) || moments.length === 0) {
-    return '';
+    pgn += `[SetUp "1"]\n`;
+    pgn += `[FEN "${initialMoment.fen}"]\n\n`;
+    pgn += '*';
+    return pgn;
   }
 
-  let pgn = '';
   let currentDepth = 1;
   let variationStack = [];
 
