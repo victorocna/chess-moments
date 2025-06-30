@@ -1,8 +1,8 @@
 const { flatten } = require('lodash');
-const splitByMoveIndex = require('./split-by-move');
-const tree = require('./tree');
+const splitByMoveIndex = require('../split-by-move');
+const tree = require('../tree');
 
-const train = (sloppyPgn, fen) => {
+const moveTrainer = (sloppyPgn, fen) => {
   // Tree is an array of array depths
   const moments = tree(sloppyPgn);
 
@@ -52,4 +52,4 @@ const train = (sloppyPgn, fen) => {
   return training;
 };
 
-module.exports = train;
+module.exports = moveTrainer;
