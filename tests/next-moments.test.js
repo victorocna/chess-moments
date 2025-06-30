@@ -190,5 +190,12 @@ describe('Next moments: Real chess games', () => {
     // Assert
     expect(next[0].move).to.equal('c5');
     expect(next[1]).to.be.undefined;
+
+    // Act again
+    current = moments[0];
+    next = getNextMoments(moments, current);
+
+    // Assert
+    expect(next[0].move).to.equal('Rb4');
   });
 });

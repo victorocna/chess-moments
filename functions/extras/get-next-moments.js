@@ -7,7 +7,7 @@ const getNextMoments = (moments, current) => {
 
     // If it's the first moment without move, add the next moment
     if (current.index === 0 && !current.move) {
-      return moments[1];
+      return [moments[1]];
     }
 
     // Split moments after the current index
