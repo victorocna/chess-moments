@@ -4,14 +4,10 @@
 const getNextMoments = (moments, current) => {
   try {
     const next = [];
-    const sameDepth = moments[moments.indexOf(current) + 1];
-    if (sameDepth.move && sameDepth.depth === current.depth) {
-      next.push(sameDepth);
-    }
 
     // If it's the first moment without move, add the next moment
     if (current.index === 0 && !current.move) {
-      next.push(moments[1]);
+      return moments[1];
     }
 
     // Split moments after the current index
@@ -21,41 +17,50 @@ const getNextMoments = (moments, current) => {
     // Add fullmove number to the current moment
     current.fullmove = Number(current.fen.split(' ')[5]);
 
-    // Active color is white
-    if (current.fen.split(' ')[1] === 'w') {
-      for (const moment of moves) {
-        const activeColor = moment.fen.split(' ')[1];
-        const fullmove = Number(moment.fen.split(' ')[5]);
+    // Active color after current move (who moves next)
+    const activeColorAfterCurrent = current.fen.split(' ')[1];
 
-        // Check if the next moment is a valid move for white
-        if (
-          moment.depth === current.depth + 1 &&
-          activeColor === 'b' &&
-          fullmove === current.fullmove
-        ) {
-          next.push(moment);
+    for (const moment of moves) {
+      const activeColorAfterMoment = moment.fen.split(' ')[1];
+      const fullmove = Number(moment.fen.split(' ')[5]);
+
+      // Main line continuation (same depth)
+      if (moment.depth === current.depth) {
+        // If current move results in white to move, find the next white move
+        if (activeColorAfterCurrent === 'w') {
+          // Look for white's move: after white moves, it's black's turn
+          if (activeColorAfterMoment === 'b' && fullmove === current.fullmove) {
+            next.push(moment);
+          }
+        }
+        // If current move results in black to move, find the next black move
+        else if (activeColorAfterCurrent === 'b') {
+          // Look for black's move: after black moves, it's white's turn and fullmove increments
+          if (activeColorAfterMoment === 'w' && fullmove === current.fullmove + 1) {
+            next.push(moment);
+          }
+        }
+      }
+
+      // Variations (depth + 1)
+      else if (moment.depth === current.depth + 1) {
+        // If current move results in white to move, find variations for white
+        if (activeColorAfterCurrent === 'w') {
+          // Look for white's variation: after white moves, it's black's turn
+          if (activeColorAfterMoment === 'b' && fullmove === current.fullmove) {
+            next.push(moment);
+          }
+        }
+        // If current move results in black to move, find variations for black
+        else if (activeColorAfterCurrent === 'b') {
+          // Look for black's variation: after black moves, it's white's turn and fullmove increments
+          if (activeColorAfterMoment === 'w' && fullmove === current.fullmove + 1) {
+            next.push(moment);
+          }
         }
       }
     }
 
-    // Active color is black
-    if (current.fen.split(' ')[1] === 'b') {
-      for (const moment of moves) {
-        const activeColor = moment.fen.split(' ')[1];
-        const fullmove = Number(moment.fen.split(' ')[5]);
-
-        // Check if the next moment is a valid move for black
-        if (
-          moment.depth === current.depth + 1 &&
-          activeColor === 'w' &&
-          fullmove === current.fullmove + 1
-        ) {
-          next.push(moment);
-        }
-      }
-    }
-
-    // If no next moment is found, return an empty array
     return next;
   } catch {
     return [];

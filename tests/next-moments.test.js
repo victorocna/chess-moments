@@ -145,4 +145,47 @@ describe('real chess games', () => {
     expect(next[0].move).to.equal('Bb4');
     expect(next[1].move).to.equal('Bd6');
   });
+
+  it.only('Selezniev vs. Alekhine', () => {
+    // Arrange
+    const pgn = [
+      '[Event "Triberg-A"]',
+      '[Site "Triberg"]',
+      '[Date "1921.07.09"]',
+      '[Round "3"]',
+      '[White "Selezniev, Alexey Sergeevich"]',
+      '[Black "Alekhine, Alexander"]',
+      '[Result "0-1"]',
+      '[SetUp "1"]',
+      '[FEN "1r3rk1/2qnppb1/b2p2pp/p1pP4/P1P5/3B1NP1/2QBPP1P/1R3RK1 b - - 0 20"]',
+      '[PlyCount "16"]',
+      '[EventDate "1921.07.07"]',
+      '',
+      '20... Rb4 $1 {[%csl Rc4][%cal Gg7b2] !} 21. Bxb4 cxb4 22. Nd2 Nc5 (22... Rc8)',
+      '23. Nb3 Nd7 $2 {?} (23... Nxa4 $6 24. Ra1 Nc5 25. Nxa5 Bxa1 26. Rxa1 Kg7 27.',
+      'Nc6) (23... Rc8 $1 24. Nxc5 Qxc5 25. Rfc1 Bc3 26. Qb3 Bxc4 27. Bxc4 Qxc4 28.',
+      'Qxc4 Rxc4 $17) 24. c5 $1 {!} Bxd3 25. exd3 $1 {!} (25. Qxd3 dxc5) 25... dxc5',
+      '26. Rfe1 (26. Qc4 Qd6 27. Nxa5 Ne5 28. Qb3 Ra8) 26... Ne5 27. Re3 (27. Qxc5',
+      'Nf3+ 28. Kf1 Qxc5 29. Nxc5 Nd2+ 30. Ke2 Nxb1 31. Rxb1 Rd8 $1) 27... Rc8 28. Rc1',
+      '$16 {Black has won the game after a long fight.} 0-1',
+      '',
+    ];
+
+    // Act
+    const moments = flat(pgn);
+    const currentOne = moments.find((m) => m.move === 'Nc5' && m.depth === 1);
+    const nextOne = getNextMoments(moments, currentOne);
+
+    // Assert
+    expect(nextOne[0].move).to.equal('Nb3');
+    expect(nextOne[1]).to.be.undefined;
+
+    // Act again
+    const currentTwo = moments.find((m) => m.move === 'Nd7' && m.depth === 1);
+    const nextTwo = getNextMoments(moments, currentTwo);
+
+    // Assert
+    expect(nextTwo[0].move).to.equal('c5');
+    expect(nextTwo[1]).to.be.undefined;
+  });
 });
