@@ -241,4 +241,13 @@ describe('Next moments: Selezniev vs. Alekhine', () => {
     // Assert
     expect(next.length).to.equal(1);
   });
+
+  it('Next moments: Next mainline move should be the only one even if other previous sidelines exist', () => {
+    // Act
+    const current = moments.find((m) => m.move === 'Nd7' && m.depth === 1);
+    const next = getNextMoments(moments, current);
+
+    // Assert
+    expect(next.length).to.equal(1);
+  });
 });

@@ -51,6 +51,14 @@ const getNextMoments = (moments, current) => {
       return next;
     }
 
+    // Remove all next moments until depth equals current.depth when next moment does not have a move
+    if (!nextMoment?.move) {
+      const filteredMoments = moments.filter((moment, index) => {
+        return index <= nextIndex || moment.depth === current.depth;
+      });
+      moments = filteredMoments;
+    }
+
     // Add fullmove number to the current moment
     current.fullmove = Number(current.fen.split(' ')[5]);
 
