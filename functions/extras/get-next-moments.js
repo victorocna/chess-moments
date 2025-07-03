@@ -10,32 +10,41 @@ const getNextMoments = (moments, current) => {
       return [moments[1]];
     }
 
-    // Split moments after the current index
-    const currentIndex = moments.indexOf(current);
-    let moves = moments.slice(currentIndex + 1).filter((m) => m.move);
+    // If there is no next moment, return empty array
+    const nextIndex = moments.indexOf(current) + 1;
+    const nextMoment = moments[nextIndex];
+    if (!nextMoment) {
+      return [];
+    }
 
-    // If the immediate next moment has increased depth, filter out all moments until depth returns to current
-    if (moves.length > 0 && moves[0].depth > current.depth) {
-      let foundReturnToCurrentDepth = false;
-      moves = moves.filter((moment) => {
-        if (foundReturnToCurrentDepth) {
-          return true; // Keep all moments after we return to current depth
-        }
-        if (moment.depth === current.depth) {
-          foundReturnToCurrentDepth = true;
-          return true; // Keep this moment and all following
-        }
-        return false; // Skip moments with increased depth
-      });
+    // Add the next moment if it has a move and is at the same depth
+    if (nextMoment.move && current.depth === nextMoment.depth) {
+      next.push(nextMoment);
+    }
+
+    // If the next next moment has a move, we don't have any other sidelines
+    const nextNextMoment = moments[nextIndex + 1];
+    if (nextMoment?.move && nextNextMoment?.move) {
+      return next;
     }
 
     // Add fullmove number to the current moment
     current.fullmove = Number(current.fen.split(' ')[5]);
 
+    // Keep only slim moments
+    const slim = moments.filter((moment) => {
+      const fullmove = Number(moment.fen.split(' ')[5]);
+      return (
+        moment.index > current.index + 1 &&
+        fullmove <= current.fullmove + 1 &&
+        moment.move // Also filter out moments without a move
+      );
+    });
+
     // Active color after current move (who moves next)
     const activeColorAfterCurrent = current.fen.split(' ')[1];
 
-    for (const moment of moves) {
+    for (const moment of slim) {
       // Only process main line and immediate variations
       if (moment.depth > current.depth + 1) {
         continue;

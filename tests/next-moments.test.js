@@ -108,7 +108,7 @@ describe('Next moments: Real chess games', () => {
     expect(next[1].move).to.equal('Nb6');
   });
 
-  it('Next moments:English Attack - Rapport-Jobava System', () => {
+  it('Next moments: English Attack - Rapport-Jobava System', () => {
     // Arrange
     const pgn = [
       '[Event "Starter pack prototype: English Attack"]',
@@ -145,57 +145,82 @@ describe('Next moments: Real chess games', () => {
     expect(next[0].move).to.equal('Bb4');
     expect(next[1].move).to.equal('Bd6');
   });
+});
 
-  it('Next moments: Selezniev vs. Alekhine', () => {
-    // Arrange
-    const pgn = [
-      '[Event "Triberg-A"]',
-      '[Site "Triberg"]',
-      '[Date "1921.07.09"]',
-      '[Round "3"]',
-      '[White "Selezniev, Alexey Sergeevich"]',
-      '[Black "Alekhine, Alexander"]',
-      '[Result "0-1"]',
-      '[SetUp "1"]',
-      '[FEN "1r3rk1/2qnppb1/b2p2pp/p1pP4/P1P5/3B1NP1/2QBPP1P/1R3RK1 b - - 0 20"]',
-      '[PlyCount "16"]',
-      '[EventDate "1921.07.07"]',
-      '',
-      '20... Rb4 $1 {[%csl Rc4][%cal Gg7b2] !} 21. Bxb4 cxb4 22. Nd2 Nc5 (22... Rc8)',
-      '23. Nb3 Nd7 $2 {?} (23... Nxa4 $6 24. Ra1 Nc5 25. Nxa5 Bxa1 26. Rxa1 Kg7 27.',
-      'Nc6) (23... Rc8 $1 24. Nxc5 Qxc5 25. Rfc1 Bc3 26. Qb3 Bxc4 27. Bxc4 Qxc4 28.',
-      'Qxc4 Rxc4 $17) 24. c5 $1 {!} Bxd3 25. exd3 $1 {!} (25. Qxd3 dxc5) 25... dxc5',
-      '26. Rfe1 (26. Qc4 Qd6 27. Nxa5 Ne5 28. Qb3 Ra8) 26... Ne5 27. Re3 (27. Qxc5',
-      'Nf3+ 28. Kf1 Qxc5 29. Nxc5 Nd2+ 30. Ke2 Nxb1 31. Rxb1 Rd8 $1) 27... Rc8 28. Rc1',
-      '$16 {Black has won the game after a long fight.} 0-1',
-      '',
-    ];
+describe('Next moments: Selezniev vs. Alekhine', () => {
+  // Arrange
+  const pgn = [
+    '[Event "Triberg-A"]',
+    '[Site "Triberg"]',
+    '[Date "1921.07.09"]',
+    '[Round "3"]',
+    '[White "Selezniev, Alexey Sergeevich"]',
+    '[Black "Alekhine, Alexander"]',
+    '[Result "0-1"]',
+    '[SetUp "1"]',
+    '[FEN "1r3rk1/2qnppb1/b2p2pp/p1pP4/P1P5/3B1NP1/2QBPP1P/1R3RK1 b - - 0 20"]',
+    '[PlyCount "16"]',
+    '[EventDate "1921.07.07"]',
+    '',
+    '20... Rb4 $1 {[%csl Rc4][%cal Gg7b2] !} 21. Bxb4 cxb4 22. Nd2 Nc5 (22... Rc8)',
+    '23. Nb3 Nd7 $2 {?} (23... Nxa4 $6 24. Ra1 Nc5 25. Nxa5 Bxa1 26. Rxa1 Kg7 27.',
+    'Nc6) (23... Rc8 $1 24. Nxc5 Qxc5 25. Rfc1 Bc3 26. Qb3 Bxc4 27. Bxc4 Qxc4 28.',
+    'Qxc4 Rxc4 $17) 24. c5 $1 {!} Bxd3 25. exd3 $1 {!} (25. Qxd3 dxc5) 25... dxc5',
+    '26. Rfe1 (26. Qc4 Qd6 27. Nxa5 Ne5 28. Qb3 Ra8) 26... Ne5 27. Re3 (27. Qxc5',
+    'Nf3+ 28. Kf1 Qxc5 29. Nxc5 Nd2+ 30. Ke2 Nxb1 31. Rxb1 Rd8 $1) 27... Rc8 28. Rc1',
+    '$16 {Black has won the game after a long fight.} 0-1',
+    '',
+  ];
+  const moments = flat(pgn);
 
+  it('Next moments: Next move of 22... Nc5 is 23. Nb3', () => {
     // Act
-    const moments = flat(pgn);
-    let current;
-    let next;
-
-    current = moments.find((m) => m.move === 'Nc5' && m.depth === 1);
-    next = getNextMoments(moments, current);
+    const current = moments.find((m) => m.move === 'Nc5' && m.depth === 1);
+    const next = getNextMoments(moments, current);
 
     // Assert
-    expect(next[0].move).to.equal('Nb3');
+    expect(next[0]?.move).to.equal('Nb3');
     expect(next[1]).to.be.undefined;
+  });
 
-    // Act again
-    current = moments.find((m) => m.move === 'Nd7' && m.depth === 1);
-    next = getNextMoments(moments, current);
+  it('Next moments: Next move of 24. Ra1 is 24... Nc5', () => {
+    // Act
+    const current = moments.find((m) => m.move === 'Ra1' && m.depth === 2);
+    const next = getNextMoments(moments, current);
 
     // Assert
-    expect(next[0].move).to.equal('c5');
+    expect(next[0]?.move).to.equal('Nc5');
     expect(next[1]).to.be.undefined;
+  });
 
-    // Act again
-    current = moments[0];
-    next = getNextMoments(moments, current);
+  it('Next moments: Next move of 23. Nb3 are 23... Nd7 && 23... Nxa4 && 23... Rc8', () => {
+    // Act
+    const current = moments.find((m) => m.move === 'Nb3' && m.depth === 1);
+    const next = getNextMoments(moments, current);
 
     // Assert
-    expect(next[0].move).to.equal('Rb4');
+    expect(next[0]?.move).to.equal('Nd7');
+    expect(next[1]?.move).to.equal('Nxa4');
+    expect(next[2]?.move).to.equal('Rc8');
+    expect(next[3]).to.be.undefined;
+  });
+
+  it('Next moments: Next move of the initial position is 20... Rb4', () => {
+    // Act
+    const current = moments[0];
+    const next = getNextMoments(moments, current);
+
+    // Assert
+    expect(next[0]?.move).to.equal('Rb4');
+    expect(next[1]).to.be.undefined;
+  });
+
+  it('Next moments: Next move of last move does not exist', () => {
+    // Act
+    const current = moments[moments.length - 1];
+    const next = getNextMoments(moments, current);
+
+    // Assert
+    expect(next[0]).to.be.undefined;
   });
 });
