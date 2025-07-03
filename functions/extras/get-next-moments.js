@@ -12,12 +12,16 @@ const getNextMoments = (moments, current) => {
       return [moments[1]];
     }
 
-    // If there is no next moment, return empty array
+    // Get next moments for further processing
     const nextIndex = moments.indexOf(current) + 1;
     const nextMoment = moments[nextIndex];
+    const nextNextMoment = moments[nextIndex + 1];
+
+    // Early returns for edge cases
     if (!nextMoment) {
       return [];
     }
+
     // Last move of a sideline should not have any next moves
     if (
       !nextMoment?.move &&
@@ -32,9 +36,18 @@ const getNextMoments = (moments, current) => {
       next.push(nextMoment);
     }
 
-    // If the next next moment has a move, we don't have any other sidelines
-    const nextNextMoment = moments[nextIndex + 1];
-    if (nextMoment?.move && nextNextMoment?.move) {
+    // Return early if we have consecutive moves or no next next moment
+    if (!nextNextMoment || (nextMoment?.move && nextNextMoment?.move)) {
+      return next;
+    }
+
+    // Second to last move of a sideline should not have any next moves
+    if (
+      nextMoment?.move &&
+      !nextNextMoment?.move &&
+      current.depth >= nextNextMoment.depth &&
+      getMoveNumber(nextNextMoment.fen) <= getMoveNumber(current.fen)
+    ) {
       return next;
     }
 

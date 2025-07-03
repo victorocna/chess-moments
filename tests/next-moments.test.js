@@ -12,7 +12,7 @@ describe('Next moments', () => {
     const next = getNextMoments(moments, current);
 
     // Assert
-    expect(next[0].move).to.equal('Nc6');
+    expect(next[0]?.move).to.equal('Nc6');
   });
 
   it('Next moments: Mainline and sideline for black', () => {
@@ -231,5 +231,14 @@ describe('Next moments: Selezniev vs. Alekhine', () => {
 
     // Assert
     expect(next[0]).to.be.undefined;
+  });
+
+  it('Next moments: Second to last move of a sideline should have exactly 1 next moves', () => {
+    // Act
+    const current = moments.find((m) => m.move === 'Kg7' && m.depth === 2);
+    const next = getNextMoments(moments, current);
+
+    // Assert
+    expect(next.length).to.equal(1);
   });
 });
