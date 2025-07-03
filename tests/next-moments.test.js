@@ -205,7 +205,7 @@ describe('Next moments: Selezniev vs. Alekhine', () => {
     expect(next[3]).to.be.undefined;
   });
 
-  it('Next moments: Next move of the initial position is 20... Rb4', () => {
+  it('Next moments: Next move of the initial position should exist', () => {
     // Act
     const current = moments[0];
     const next = getNextMoments(moments, current);
@@ -218,6 +218,15 @@ describe('Next moments: Selezniev vs. Alekhine', () => {
   it('Next moments: Next move of last move does not exist', () => {
     // Act
     const current = moments[moments.length - 1];
+    const next = getNextMoments(moments, current);
+
+    // Assert
+    expect(next[0]).to.be.undefined;
+  });
+
+  it('Next moments: Last move of a sideline should not have any next moves', () => {
+    // Act
+    const current = moments.find((m) => m.move === 'Nc6' && m.depth === 2);
     const next = getNextMoments(moments, current);
 
     // Assert

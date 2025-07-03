@@ -1,3 +1,5 @@
+const { getMoveNumber } = require('../helpers');
+
 /**
  * Always returns an array because there can be more than one next moment
  */
@@ -14,6 +16,14 @@ const getNextMoments = (moments, current) => {
     const nextIndex = moments.indexOf(current) + 1;
     const nextMoment = moments[nextIndex];
     if (!nextMoment) {
+      return [];
+    }
+    // Last move of a sideline should not have any next moves
+    if (
+      !nextMoment?.move &&
+      current.depth >= nextMoment.depth &&
+      getMoveNumber(nextMoment.fen) <= getMoveNumber(current.fen)
+    ) {
       return [];
     }
 
