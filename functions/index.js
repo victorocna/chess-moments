@@ -1,6 +1,7 @@
 const fen = require('./fen');
 const flat = require('./flat');
 const lines = require('./lines');
+const mainline = require('./mainline');
 const moment = require('./moment');
 const parser = require('./parser');
 const pgn = require('./pgn');
@@ -14,6 +15,7 @@ module.exports = {
   fen,
   flat,
   lines,
+  mainline,
   moment,
   parser,
   pgn,
