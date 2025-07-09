@@ -1,18 +1,10 @@
-const makeMoments = require('./make-moments');
+const flat = require('./flat');
 
 const mainline = (sloppyPgn) => {
-  const moments = makeMoments(sloppyPgn);
-
-  let index = 0;
-  for (const lines of moments) {
-    for (const moment of lines) {
-      moment.index = index;
-      index++;
-    }
-  }
+  const flatMoments = flat(sloppyPgn);
 
   // Only return the mainline moments
-  const mainlineMoments = moments.filter((move) => {
+  const mainlineMoments = flatMoments.filter((move) => {
     return move.depth === 1 && (move.move || move.index === 0);
   });
 
