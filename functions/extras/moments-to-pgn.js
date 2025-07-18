@@ -35,6 +35,13 @@ const momentsToPgn = (moments) => {
     if (!moment.move) {
       // If this is a variation marker (depth > 1) and not the initial position
       if (depth > 1 && i > 0) {
+        // First, close any deeper variations if we're going to a shallower depth
+        while (currentDepth > depth) {
+          variationStack.pop();
+          pgn += ')';
+          currentDepth--;
+        }
+
         // Check if we need to start a new variation at the same depth
         if (depth === currentDepth) {
           // Close current variation and start a new one at the same level

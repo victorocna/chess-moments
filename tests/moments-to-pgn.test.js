@@ -47,7 +47,9 @@ describe('moments to PGN: Basic examples', () => {
     const newPgn = momentsToPgn(moments);
 
     // Assert
-    expect(newPgn).to.include('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+    expect(newPgn).to.include(
+      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+    );
   });
 
   it('handles moments with shapes', () => {
@@ -128,6 +130,23 @@ describe('moments to PGN: Basic examples', () => {
       '[FEN "r4rk1/pp1qnpbp/2np2p1/2pNp1B1/2P1P3/3P1N2/PP3PPP/R2Q1RK1 w - - 0 1"]'
     );
     expect(newPgn).to.include('1. Nxe7+ Nxe7 2. Bxe7 *');
+  });
+
+  it('handles a long variation before a short variation', () => {
+    // Arrange
+    const pgn = [
+      '[FEN "8/6k1/1R6/R7/8/8/6K1/8 w - - 0 1"]',
+      '[SetUp "1"]',
+      '',
+      '1. Ra7+ Kf8 (1... Kg8 2. Rab7 (2. Rbb7 Kf8 3. Re7 Kg8 4. Reb7 Kh8)) (1... Kh8) *',
+    ];
+    const moments = flat(pgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+
+    // Assert
+    expect(newPgn).to.include('1... Kh8');
   });
 });
 
