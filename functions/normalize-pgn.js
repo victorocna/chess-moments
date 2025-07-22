@@ -16,5 +16,8 @@ module.exports = (pgn) => {
     return match.replace(/\n/g, '\\n');
   });
 
+  // Merge adjacent comments delimited by {}
+  processedPgn = processedPgn.replace(/(\}\s*\{)+/g, ' ');
+
   return processedPgn;
 };
