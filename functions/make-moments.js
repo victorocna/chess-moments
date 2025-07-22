@@ -1,4 +1,4 @@
-const Chess = require('../chess');
+const { Chess } = require('chess.js');
 const fen = require('./fen');
 const parser = require('./parser');
 const pgn = require('./pgn');
@@ -8,12 +8,12 @@ const make = (sloppyPgn) => {
   const normalizedPgn = pgn.normalize(sloppyPgn);
 
   // load PGN and check headers for existing FEN
-  const chess = new Chess();
-  chess.load_pgn(normalizedPgn);
-  const header = chess.header();
+  const chess = new Chess(); // can throw if PGN is invalid
+  chess.loadPgn(normalizedPgn);
+  const headers = chess.getHeaders();
 
   const store = {
-    fen: fen.normalize(header.FEN) || fen.initial, // current FEN
+    fen: fen.normalize(headers.FEN) || fen.initial, // current FEN
     depth: 1, // current depth
   };
 
@@ -26,7 +26,7 @@ const make = (sloppyPgn) => {
     store.depth = depth;
 
     // parse current moves with the computed FEN
-    const moments = parser(chess, moves, store.fen, depth);
+    const moments = parser(moves, store.fen, depth);
 
     // set history for the current depth
     history.set(depth, fen.history(moments, history, depth));
