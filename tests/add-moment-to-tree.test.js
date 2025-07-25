@@ -3,13 +3,13 @@ const { expect } = require('chai');
 const { formatMoment } = require('./functions');
 const { flatten } = require('lodash');
 
-describe('addMomentToTree', () => {
+describe.only('addMomentToTree', () => {
   it('Add new moment to the end of the tree if the new moment is the last one', () => {
     // Arrange
     const pgn = '1. e4 *';
     const move = {
       san: 'e5',
-      fen: 'rnbqkb1r/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKB1R w KQkq - 0 1',
+      fen: 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
     };
 
     // Act
@@ -20,15 +20,15 @@ describe('addMomentToTree', () => {
 
     // Assert
     expect(flatTree).to.have.length(3);
-    expect(flatTree[2].san).to.equal('e5');
+    expect(flatTree[2].move).to.equal('e5');
   });
 
-  it.only('Return early if the new moment already exists in the tree', () => {
+  it('Return early if the new moment already exists in the tree', () => {
     // Arrange
     const pgn = '1. e4 e5 *';
     const move = {
       san: 'e5',
-      fen: 'rnbqkb1r/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKB1R w KQkq - 0 1',
+      fen: 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
     };
 
     // Act
@@ -39,6 +39,6 @@ describe('addMomentToTree', () => {
 
     // Assert
     expect(flatTree).to.have.length(3);
-    expect(flatTree[2].san).to.equal('e5');
+    expect(flatTree[2].move).to.equal('e5');
   });
 });

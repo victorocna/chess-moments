@@ -1,35 +1,22 @@
-const addMomentToTree = (tree, moment) => {
-  // Input validation
-  if (!Array.isArray(tree)) {
-    throw new Error('Tree must be an array');
+const { flatten } = require('lodash');
+
+const addMomentToTree = (tree, newMoment) => {
+  if (!newMoment || !newMoment.san || !newMoment.before) {
+    return tree;
   }
 
-  if (!moment || typeof moment !== 'object') {
-    throw new Error('Moment must be an object');
-  }
-
-  // Ensure moment has required properties
-  if (!moment.after || !moment.before) {
-    throw new Error('Moment must have "after" and "before" FEN positions');
-  }
-
-  // Check if the moment already exists in the tree
-  for (const line of tree) {
-    for (const existingMoment of line) {
-      // Check if a moment with the same move and resulting position already exists
-      if (existingMoment.san === moment.san &&
-          existingMoment.fen === moment.after) {
-        // Moment already exists, return tree unchanged
-        return tree.map((line) => line.map((m) => ({ ...m })));
-      }
-    }
+  const flat = flatten(tree);
+  // Check if moment FEN already exists in the tree
+  if (flat.some((moment) => moment.fen === newMoment.after)) {
+    // If the moment already exists, return the tree unchanged
+    return tree;
   }
 
   // Create a new tree (don't mutate the original) - deep copy
   const newTree = tree.map((line) => line.map((m) => ({ ...m })));
 
   // Default depth to 1 if not specified
-  const targetDepth = moment.depth || 1;
+  const targetDepth = newMoment.depth || 1;
 
   // Find the appropriate position to insert the moment
   let insertionPoint = null;
@@ -43,7 +30,7 @@ const addMomentToTree = (tree, moment) => {
       const existingMoment = line[momentIndex];
 
       // If we find a moment with the same "before" FEN, this is where we branch
-      if (existingMoment.fen === moment.before) {
+      if (existingMoment.fen === newMoment.before) {
         // Check if we're adding to the same line (same depth) or creating a new variation
         if (targetDepth === existingMoment.depth) {
           // Insert after this moment in the same line
@@ -62,9 +49,10 @@ const addMomentToTree = (tree, moment) => {
 
   // Prepare the moment to be inserted
   const momentToInsert = {
-    ...moment,
+    ...newMoment,
     depth: targetDepth,
-    fen: moment.after, // The FEN after the move
+    fen: newMoment.after, // The FEN after the move
+    move: newMoment.san, // The move in SAN format
   };
 
   if (insertionPoint) {
