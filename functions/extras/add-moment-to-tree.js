@@ -8,7 +8,6 @@ const addMomentToTree = (tree, newMoment) => {
   const flat = flatten(tree);
   // Check if moment FEN already exists in the tree
   if (flat.some((moment) => moment.fen === newMoment.after)) {
-    // If the moment already exists, return the tree unchanged
     return tree;
   }
 
