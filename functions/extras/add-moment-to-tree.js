@@ -16,7 +16,7 @@ const addMomentToTree = (tree, newMoment) => {
   const newTree = tree.map((line) => line.map((m) => ({ ...m })));
 
   // Find the appropriate position to insert the moment
-  let insertionPoint = null;
+  let point = null;
 
   // Look for the position where this moment should be inserted
   // by finding the moment with matching "before" FEN at any depth
@@ -29,24 +29,23 @@ const addMomentToTree = (tree, newMoment) => {
       // If we find a moment with the same "before" FEN, this is where we branch
       if (existingMoment.fen === newMoment.before) {
         // Insert after this moment in the same line, with the same depth
-        insertionPoint = { lineIndex, momentIndex: momentIndex + 1 };
+        point = { lineIndex, momentIndex: momentIndex + 1 };
         break;
       }
     }
 
-    if (insertionPoint) break;
+    // If we found an insertion point, no need to continue searching
+    if (point) {
+      break;
+    }
   }
 
   // Prepare the moment to be inserted with only the properties that match normal moments
-  const momentToInsert = prepareMoment(newMoment, insertionPoint, newTree);
+  const momentToInsert = prepareMoment(newMoment, point, newTree);
 
-  if (insertionPoint) {
+  if (point) {
     // Insert into existing line
-    newTree[insertionPoint.lineIndex].splice(
-      insertionPoint.momentIndex,
-      0,
-      momentToInsert
-    );
+    newTree[point.lineIndex].splice(point.momentIndex, 0, momentToInsert);
   } else {
     // If no matching position found, always create a new line
     // This ensures we don't accidentally add to an unrelated existing line
