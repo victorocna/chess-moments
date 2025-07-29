@@ -1,4 +1,4 @@
-const { flatten } = require('lodash');
+const { flatten, cloneDeep } = require('lodash');
 const { insertMomentIntoTree } = require('../helpers');
 
 const addMomentToTree = (tree, newMoment) => {
@@ -12,13 +12,16 @@ const addMomentToTree = (tree, newMoment) => {
     return tree;
   }
 
+  // Deep clone chess tree to avoid mutating the original
+  const clonedTree = cloneDeep(tree);
+
   // Find the appropriate position to insert the moment
   let point = null;
 
   // Look for the position where this moment should be inserted
   // by finding the moment with matching "before" FEN at any depth
-  for (let lineIndex = 0; lineIndex < tree.length; lineIndex++) {
-    const line = tree[lineIndex];
+  for (let lineIndex = 0; lineIndex < clonedTree.length; lineIndex++) {
+    const line = clonedTree[lineIndex];
 
     for (let momentIndex = 0; momentIndex < line.length; momentIndex++) {
       const existingMoment = line[momentIndex];
@@ -50,7 +53,7 @@ const addMomentToTree = (tree, newMoment) => {
   }
 
   // Insert the moment into the tree
-  const newTree = insertMomentIntoTree(tree, point, newMoment);
+  const newTree = insertMomentIntoTree(clonedTree, point, newMoment);
 
   // Reindex all moments
   let globalIndex = 0;

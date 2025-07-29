@@ -141,7 +141,7 @@ describe('addMomentToTree - Sidelines', () => {
   });
 });
 
-describe.only('addMomentToTree - Real chess games', () => {
+describe('addMomentToTree - Real chess games', () => {
   it('addMomentToTree: English Attack - Rapport-Jobava System', () => {
     // Arrange
     const pgn = [
