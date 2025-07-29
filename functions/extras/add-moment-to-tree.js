@@ -1,5 +1,5 @@
 const { flatten } = require('lodash');
-const { prepareMoment } = require('../helpers');
+const { insertMomentIntoTree } = require('../helpers');
 
 const addMomentToTree = (tree, newMoment) => {
   if (!newMoment || !newMoment.san || !newMoment.before) {
@@ -12,24 +12,33 @@ const addMomentToTree = (tree, newMoment) => {
     return tree;
   }
 
-  // Create a new tree (don't mutate the original) - deep copy
-  const newTree = tree.map((line) => line.map((m) => ({ ...m })));
-
   // Find the appropriate position to insert the moment
   let point = null;
 
   // Look for the position where this moment should be inserted
   // by finding the moment with matching "before" FEN at any depth
-  for (let lineIndex = 0; lineIndex < newTree.length; lineIndex++) {
-    const line = newTree[lineIndex];
+  for (let lineIndex = 0; lineIndex < tree.length; lineIndex++) {
+    const line = tree[lineIndex];
 
     for (let momentIndex = 0; momentIndex < line.length; momentIndex++) {
       const existingMoment = line[momentIndex];
 
       // If we find a moment with the same "before" FEN, this is where we branch
       if (existingMoment.fen === newMoment.before) {
-        // Insert after this moment in the same line, with the same depth
-        point = { lineIndex, momentIndex: momentIndex + 1 };
+        // Check if there's already a move after this position in the same line
+        const nextMomentInLine = line[momentIndex + 1];
+
+        if (nextMomentInLine && nextMomentInLine.move) {
+          // There's already a move after this position, so create a new sideline
+          point = {
+            type: 'newLine',
+            afterLineIndex: lineIndex,
+            branchMomentIndex: momentIndex,
+          };
+        } else {
+          // No move after this position, so continue in the same line
+          point = { type: 'sameLine', lineIndex, momentIndex: momentIndex + 1 };
+        }
         break;
       }
     }
@@ -40,17 +49,8 @@ const addMomentToTree = (tree, newMoment) => {
     }
   }
 
-  // Prepare the moment to be inserted with only the properties that match normal moments
-  const momentToInsert = prepareMoment(newMoment, point, newTree);
-
-  if (point) {
-    // Insert into existing line
-    newTree[point.lineIndex].splice(point.momentIndex, 0, momentToInsert);
-  } else {
-    // If no matching position found, always create a new line
-    // This ensures we don't accidentally add to an unrelated existing line
-    newTree.push([momentToInsert]);
-  }
+  // Insert the moment into the tree
+  const newTree = insertMomentIntoTree(tree, point, newMoment);
 
   // Reindex all moments
   let globalIndex = 0;

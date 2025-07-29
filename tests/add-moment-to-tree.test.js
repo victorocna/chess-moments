@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const { formatMoment } = require('./functions');
 const { flatten } = require('lodash');
 
-describe('addMomentToTree - Edge cases', () => {
+describe('addMomentToTree - Mainlines', () => {
   it('New moment does not have a SAN or before FEN', () => {
     // Arrange
     const pgn = '1. e4 e5 *';
@@ -81,7 +81,7 @@ describe('addMomentToTree - Edge cases', () => {
   });
 });
 
-describe('addMomentToTree - Normal cases', () => {
+describe('addMomentToTree - Sidelines', () => {
   it('Add new moment to the end of the tree as a sideline if the new moment is the last one', () => {
     // Arrange
     const pgn = '1. e4 e5 (1... c5) 2. Nc3 *';
@@ -99,5 +99,24 @@ describe('addMomentToTree - Normal cases', () => {
     // Assert
     expect(flatTree).to.have.length(8);
     expect(flatTree[5].move).to.equal('Nf3');
+  });
+
+  it('Add new moment as a sideline if the new moment is not on the mainline', () => {
+    // Arrange
+    const pgn = '1. e4 e5 2. Nf3 *';
+    const move = {
+      san: 'c5',
+      fen: 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+    };
+
+    // Act
+    const moments = tree(pgn);
+    const newMove = formatMoment(move);
+    const updatedTree = addMomentToTree(moments, newMove);
+    const flatTree = flatten(updatedTree);
+
+    // Assert
+    expect(flatTree).to.have.length(7);
+    expect(flatTree[4].move).to.equal('c5');
   });
 });
