@@ -77,7 +77,8 @@ const getNextMoments = (moments, current) => {
 
     for (const moment of slim) {
       // Only process main line and immediate variations
-      if (moment.depth > current.depth + 1) {
+      // Ignore next moments with depth lower than the current moment
+      if (moment.depth > current.depth + 1 || moment.depth < current.depth) {
         continue;
       }
 

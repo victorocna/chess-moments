@@ -70,6 +70,21 @@ describe('Next moments', () => {
     expect(next[1].move).to.equal('Bb5');
     expect(next[2].move).to.equal('d4');
   });
+
+  it('Next moments: Possible moments cannot have a lower depth', () => {
+    // Arrange
+    const pgn = '1. d4 Nf6 2. Nc3 (2. e4 g6 (2... e5 3. Nc3 d6)) 2... g6 *';
+    const moments = flat(pgn);
+    const current = moments.find((m) => m.move === 'e4');
+
+    // Act
+    const next = getNextMoments(moments, current);
+
+    // Assert
+    expect(next[0].move).to.equal('g6');
+    expect(next[1].move).to.equal('e5');
+    expect(next[2]).to.not.exist;
+  });
 });
 
 describe('Next moments: Real chess games', () => {
