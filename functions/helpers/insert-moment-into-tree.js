@@ -3,10 +3,10 @@ const prepareMoment = require('./prepare-moment');
 /**
  * Inserts a new moment into the tree at the specified point.
  * This function handles both inserting into existing lines and creating new sidelines.
- * @param {*} tree
- * @param {*} point
- * @param {*} newMoment
- * @returns
+ * @param {Array} tree - The current tree structure.
+ * @param {Object} point - The point in the tree where the moment will be inserted.
+ * @param {Object} newMoment - The new moment to be inserted, containing properties like san, fen, from, to.
+ * @returns {Array} Updated tree with the new moment inserted
  */
 const insertMomentIntoTree = (tree, point, newMoment) => {
   // Prepare the moment to be inserted with only the properties that match normal moments

@@ -1,10 +1,10 @@
 /**
  * Prepares a moment object for insertion into the tree.
  * It ensures the moment has the correct properties and depth based on its position.
- * @param {*} tree
- * @param {*} point
- * @param {*} newMoment
- * @returns
+ * @param {Array} tree - The current tree structure.
+ * @param {Object} point - The point in the tree where the moment will be inserted.
+ * @param {Object} newMoment - The new moment to be inserted, containing properties like san, fen, from, to.
+ * @returns {Object} Prepared moment object with depth and necessary properties
  */
 const prepareMoment = (tree, point, newMoment) => {
   let targetDepth = newMoment.depth || 1;
