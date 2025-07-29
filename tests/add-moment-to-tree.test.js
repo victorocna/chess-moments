@@ -119,4 +119,24 @@ describe('addMomentToTree - Sidelines', () => {
     expect(flatTree).to.have.length(7);
     expect(flatTree[4].move).to.equal('c5');
   });
+
+  it('Add new moment as a sideline and increase the depth', () => {
+    // Arrange
+    const pgn = '1. d4 d5 (1... Nf6 2. Nc3 g6 3. e4) 2. Nf3 *'
+    const move = {
+      san: 'd5',
+      fen: 'rnbqkb1r/pppppppp/5n2/8/3P4/2N5/PPP1PPPP/R1BQKBNR b KQkq - 2 2',
+    };
+
+    // Act
+    const moments = tree(pgn);
+    const newMove = formatMoment(move);
+    const updatedTree = addMomentToTree(moments, newMove);
+    const flatTree = flatten(updatedTree);
+
+    // Assert
+    expect(flatTree[8].move).to.equal('d5');
+    expect(flatTree[8].depth).to.equal(3); // increased depth
+    expect(flatTree[9]).to.not.have.property('move');
+  });
 });

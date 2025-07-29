@@ -75,7 +75,7 @@ const insertMomentIntoTree = (tree, point, newMoment) => {
 
       // Insert the continuation line after the sideline
       const continuationPositionMarker = {
-        depth: 1,
+        depth: beforeSplit[0]?.depth || 1, // Use the depth of the line being continued
         fen: beforeSplit[beforeSplit.length - 1].fen,
       };
       const continuationLine = [continuationPositionMarker, ...afterSplit];

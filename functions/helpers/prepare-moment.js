@@ -14,8 +14,11 @@ const prepareMoment = (tree, point, newMoment) => {
       // Use the depth of the line we're inserting into
       targetDepth = tree[point.lineIndex]?.[0]?.depth || 1;
     } else if (point.type === 'newLine') {
-      // For new sidelines, use depth 2 (or increment from mainline)
-      targetDepth = 2;
+      // For new sidelines, increment the depth from where we're branching
+      const branchingLine = tree[point.afterLineIndex];
+      const branchingMoment = branchingLine?.[point.branchMomentIndex];
+      const branchingDepth = branchingMoment?.depth || 1;
+      targetDepth = branchingDepth + 1;
     }
   }
 
