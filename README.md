@@ -47,6 +47,24 @@ The first level splits between variants and subvariants played in the chess game
 Returns a two level deep array of chess moments.
 It is useful for hiding future moves in chess training.
 
+## Extras
+
+### .addMomentToTree()
+
+Adds a new move to the chess tree
+
+### .getNextMoments()
+
+Move forward in the chess tree
+
+### .getPrevMoment()
+
+Move back in the chess tree
+
+### .momentsToPgn()
+
+Transform the chess tree into PGN
+
 ## JSON output
 
 The basic PGN file `1. e4 e5 *` will generated the following chess moments in JSON format:
