@@ -1,6 +1,12 @@
 const { flatten, cloneDeep } = require('lodash');
 const { insertMomentIntoTree } = require('../helpers');
 
+/**
+ * Adds a new chess moment to the tree structure.
+ * @param {*} tree - The current tree structure.
+ * @param {*} newMoment - The new moment to add.
+ * @returns {*} - The updated tree structure.
+ */
 const addMomentToTree = (tree, newMoment) => {
   if (!newMoment || !newMoment.san || !newMoment.before) {
     return tree;
