@@ -1,6 +1,7 @@
 const { fen, pgn, flat, tree, mainline } = require('./functions');
 const {
   addMomentToTree,
+  findInsertedMoment,
   getNextMoments,
   getPrevMoment,
   momentsToPgn,
@@ -14,6 +15,7 @@ module.exports = {
   tree,
   mainline,
   addMomentToTree,
+  findInsertedMoment,
   getNextMoments,
   getPrevMoment,
   momentsToPgn,

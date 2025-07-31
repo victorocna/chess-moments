@@ -12,6 +12,9 @@ const insertMomentIntoTree = (tree, point, newMoment) => {
   // Prepare the moment to be inserted with only the properties that match normal moments
   const momentToInsert = prepareMoment(tree, point, newMoment);
 
+  // Add flag to indicate this is a new moment
+  momentToInsert.new = true;
+
   // If no matching position found, always create a new line
   if (!point) {
     tree.push([momentToInsert]);

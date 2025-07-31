@@ -58,6 +58,15 @@ const addMomentToTree = (tree, newMoment) => {
     }
   }
 
+  // Remove all new flags from existing moments
+  for (const line of clonedTree) {
+    for (const moment of line) {
+      if (moment.new) {
+        delete moment.new;
+      }
+    }
+  }
+
   // Insert the moment into the tree
   const newTree = insertMomentIntoTree(clonedTree, point, newMoment);
 
