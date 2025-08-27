@@ -88,6 +88,33 @@ describe('Next moments', () => {
 });
 
 describe('Next moments: Real chess games', () => {
+  it('Next moments: Ding vs. Gukesh', () => {
+    // Arrange
+    const pgn = [
+      '[Event "FIDE World Championship Match 2024"]',
+      '[Site "Singapore SGP"]',
+      '[Date "2024.11.26"]',
+      '[Round "2"]',
+      '[White "Ding, Liren"]',
+      '[Black "Gukesh D"]',
+      '[Result "1/2-1/2"]',
+
+      '1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. d3 Nf6 5. Nc3 a6 6. a4 d6 7. O-O',
+      '(7. Bg5 h6 8. Bh4 g5 9. Bg3 (9. Nxg5 hxg5 10. Bxg5) 9... Bg4) 7... h6',
+      '(7... O-O 8. Bg5 h6 9. Bh4) *',
+    ];
+
+    // Act
+    const moments = flat(pgn);
+    const current = moments.find((m) => m.move === 'g5');
+    const next = getNextMoments(moments, current);
+
+    // Assert
+    expect(next[0].move).to.equal('Bg3');
+    expect(next[1].move).to.equal('Nxg5');
+    expect(next[2]).to.be.undefined;
+  });
+
   it('Next moments: Fischer vs. Andersson', () => {
     // Arrange
     const pgn = [

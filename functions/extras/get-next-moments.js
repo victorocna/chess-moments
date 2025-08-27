@@ -62,28 +62,35 @@ const getNextMoments = (moments, current) => {
     // Add fullmove number to the current moment
     current.fullmove = Number(current.fen.split(' ')[5]);
 
-    // Keep only slim moments
-    const slim = moments.filter((moment) => {
-      const fullmove = Number(moment.fen.split(' ')[5]);
-      return (
-        moment.index > current.index + 1 &&
-        fullmove <= current.fullmove + 1 &&
-        moment.move // Also filter out moments without a move
-      );
-    });
-
     // Active color after current move (who moves next)
     const activeColorAfterCurrent = current.fen.split(' ')[1];
 
-    for (const moment of slim) {
-      // Only process main line and immediate variations
-      // Ignore next moments with depth lower than the current moment
-      if (moment.depth > current.depth + 1 || moment.depth < current.depth) {
+    // Process moments in order and stop when we leave the current branch
+    for (const moment of moments) {
+      // Skip moments that are at or before the current moment's index
+      if (moment.index <= current.index + 1) {
+        continue;
+      }
+      // Stop if we hit a moment with lower depth (we've left this branch)
+      if (moment.depth < current.depth) {
+        break;
+      }
+      // Skip moments without moves
+      if (!moment.move) {
+        continue;
+      }
+      // Only consider moments at current depth or one level deeper
+      if (moment.depth > current.depth + 1) {
         continue;
       }
 
       const activeColorAfterMoment = moment.fen.split(' ')[1];
       const fullmove = Number(moment.fen.split(' ')[5]);
+
+      // Only consider moments within the valid move range
+      if (fullmove > current.fullmove + 1) {
+        continue;
+      }
 
       // Check if this is a valid next move based on color and fullmove
       const isValidWhiteMove =
