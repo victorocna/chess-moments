@@ -1,4 +1,4 @@
-const { getMoveNumber } = require('../helpers');
+const { isNextFen } = require('../helpers');
 
 /**
  * Always returns an array because there can be more than one next moment
@@ -23,88 +23,41 @@ const getNextMoments = (moments, current) => {
     }
 
     // Last move of a sideline should not have any next moves
-    if (
-      !nextMoment?.move &&
-      current.depth >= nextMoment.depth &&
-      getMoveNumber(nextMoment.fen) <= getMoveNumber(current.fen)
-    ) {
+    if (!nextMoment?.move && current.depth >= nextMoment.depth) {
       return [];
     }
 
-    // Add the next moment if it has a move and is at the same depth
-    if (nextMoment.move && current.depth === nextMoment.depth) {
-      next.push(nextMoment);
-    }
-
-    // Return early if we have consecutive moves or no next next moment
-    if (!nextNextMoment || (nextMoment?.move && nextNextMoment?.move)) {
-      return next;
-    }
-
-    // Second to last move of a sideline should not have any next moves
+    // Return early if there are two consecutive moves at the same depth or if the next next move does not exist
     if (
-      nextMoment?.move &&
-      !nextNextMoment?.move &&
-      current.depth >= nextNextMoment.depth &&
-      getMoveNumber(nextNextMoment.fen) <= getMoveNumber(current.fen)
+      current.move &&
+      current.depth === nextMoment.depth &&
+      (!nextNextMoment || current.depth === nextNextMoment.depth)
     ) {
-      return next;
+      return [nextMoment];
     }
 
-    // Remove all next moments until depth equals current.depth when next moment does not have a move
-    if (!nextMoment?.move) {
-      const filteredMoments = moments.filter((moment, index) => {
-        return index <= nextIndex || moment.depth === current.depth;
-      });
-      moments = filteredMoments;
-    }
+    // Remove all moves before the current moment
+    moments = moments.filter((moment) => moment.index > current.index);
 
-    // Add fullmove number to the current moment
-    current.fullmove = Number(current.fen.split(' ')[5]);
-
-    // Active color after current move (who moves next)
-    const activeColorAfterCurrent = current.fen.split(' ')[1];
-
-    // Process moments in order and stop when we leave the current branch
+    // Remove all moments after the first moment that have a lower depth than the current moment
+    let filteredMoments = [];
     for (const moment of moments) {
-      // Skip moments that are at or before the current moment's index
-      if (moment.index <= current.index + 1) {
-        continue;
-      }
-      // Stop if we hit a moment with lower depth (we've left this branch)
       if (moment.depth < current.depth) {
         break;
       }
-      // Skip moments without moves
-      if (!moment.move) {
-        continue;
-      }
-      // Only consider moments at current depth or one level deeper
-      if (moment.depth > current.depth + 1) {
-        continue;
-      }
+      filteredMoments.push(moment);
+    }
 
-      const activeColorAfterMoment = moment.fen.split(' ')[1];
-      const fullmove = Number(moment.fen.split(' ')[5]);
+    // If next moment does not have a move, remove all moments with the depth higher than current depth
+    if (!nextMoment.move) {
+      filteredMoments = filteredMoments.filter(
+        (moment) => moment.depth <= current.depth
+      );
+    }
 
-      // Only consider moments within the valid move range
-      if (fullmove > current.fullmove + 1) {
-        continue;
-      }
-
-      // Check if this is a valid next move based on color and fullmove
-      const isValidWhiteMove =
-        activeColorAfterCurrent === 'w' &&
-        activeColorAfterMoment === 'b' &&
-        fullmove === current.fullmove;
-
-      const isValidBlackMove =
-        activeColorAfterCurrent === 'b' &&
-        activeColorAfterMoment === 'w' &&
-        fullmove === current.fullmove + 1;
-
-      // If the move is valid, add it to the next moments
-      if (isValidWhiteMove || isValidBlackMove) {
+    // Finally check for next moments from filtered moments
+    for (const moment of filteredMoments) {
+      if (moment.move && isNextFen(current.fen, moment.fen)) {
         next.push(moment);
       }
     }
