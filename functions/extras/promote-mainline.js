@@ -60,7 +60,6 @@ const promoteMainline = (moments, current) => {
       // as they should now be part of the sideline
       continue;
     } else {
-      // Keep all other moments unchanged
       result.push({ ...moments[i] });
     }
   }
