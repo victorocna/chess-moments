@@ -45,6 +45,11 @@ const promoteMainline = (moments, current) => {
       // Replace the original sideline move with the demoted target depth move
       result.push({ ...moments[moveToReplace], depth: currentDepth });
     } else if (
+      i > current.index &&
+      moments[i].depth === currentDepth
+    ) {
+      result.push({ ...moments[i], depth: targetDepth });
+    } else if (
       i > moveToReplace &&
       moments[i].depth === targetDepth &&
       moments[i].move
