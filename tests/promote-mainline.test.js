@@ -61,7 +61,7 @@ describe('Promote mainline', () => {
   });
 });
 
-describe('Promote mainline: Selezniev vs. Alekhine', () => {
+describe('Promote mainline: Fischer vs. Andersson', () => {
   it('Promote mainline: Promote 13. d4 sideline', () => {
     // Arrange
     const pgn = [
