@@ -36,6 +36,25 @@ describe('Promote mainline', () => {
     expect(newMoments[6]?.depth).to.equal(2);
   });
 
+  it('Promote mainline: Two sidelines', () => {
+    // Arrange
+    const pgn = '1. e4 e5 (1... c5) (1... e6) 2. Nf3 Nc6 *';
+    const moments = flat(pgn);
+    const current = moments.find((m) => m.move === 'c5');
+
+    // Act
+    const newMoments = promoteMainline(moments, current);
+
+    // Assert
+    // Expected result: 1. e4 c5 (1.. e5 2. Nf3 Nc6) (1... e6) *
+    expect(newMoments[2]?.move).to.equal('c5');
+    expect(newMoments[2]?.depth).to.equal(1);
+    expect(newMoments[4]?.move).to.equal('e5');
+    expect(newMoments[4]?.depth).to.equal(2);
+    expect(newMoments[8]?.move).to.equal('e6');
+    expect(newMoments[8]?.depth).to.equal(2);
+  });
+
   it('Promote mainline: Sub-sideline promotion', () => {
     // Arrange
     const pgn = '1. e3 e5 2. c3 d5 (2... c6 (2... c5)) 3. h4 h5 *';
