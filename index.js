@@ -6,6 +6,7 @@ const {
   getPrevMoment,
   momentsToPgn,
   moveTrainer,
+  promoteMainline
 } = require('./functions/extras');
 
 module.exports = {
@@ -20,4 +21,5 @@ module.exports = {
   getPrevMoment,
   momentsToPgn,
   moveTrainer,
+  promoteMainline
 };
