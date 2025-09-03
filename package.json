@@ -24,7 +24,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "chess.js": "^1.4.0"
+    "chess.js": "github:jhlywa/chess.js#master"
   },
   "devDependencies": {
     "chai": "^4.3.7",

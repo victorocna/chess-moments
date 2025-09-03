@@ -12,8 +12,12 @@ module.exports = (moves, fen = initial, depth = 1) => {
     chess.undo();
   }
 
-  const comment = chess.getComment();
-  const first = moment.build({ depth, comment, fen: chess.fen() });
+  // First moment does not have a move
+  const first = moment.build({
+    depth,
+    comment: chess.getComment(),
+    fen: chess.fen(),
+  });
 
   const moments = history.map((item) => {
     chess.move(item.san);
@@ -24,6 +28,7 @@ module.exports = (moves, fen = initial, depth = 1) => {
       from: item.from,
       to: item.to,
       comment: chess.getComment(),
+      suffix: chess.getSuffixAnnotation(),
       fen: chess.fen(),
     });
   });
