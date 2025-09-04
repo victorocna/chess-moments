@@ -1,4 +1,6 @@
 const addMomentToTree = require('./add-moment-to-tree');
+const deleteFrom = require('./delete-from');
+const deleteUntil = require('./delete-until');
 const findInsertedMoment = require('./find-inserted-moment');
 const getNextMoments = require('./get-next-moments');
 const getPrevMoment = require('./get-prev-moment');
@@ -8,6 +10,8 @@ const promoteMainline = require('./promote-mainline');
 
 module.exports = {
   addMomentToTree,
+  deleteFrom,
+  deleteUntil,
   findInsertedMoment,
   getNextMoments,
   getPrevMoment,
