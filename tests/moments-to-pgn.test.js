@@ -27,6 +27,18 @@ describe('moments to PGN: Basic examples', () => {
     expect(newPgn).to.equal(originalPgn);
   });
 
+  it('converts moments with suffixes', () => {
+    // Arrange
+    const originalPgn = "1. e4 {King's pawn opening} d5!? *";
+    const moments = flat(originalPgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+
+    // Assert
+    expect(newPgn).to.equal(originalPgn);
+  });
+
   it('converts moments with variations', () => {
     // Arrange
     const originalPgn = '1. e4 e5 (1... c5) 2. Nf3 *';

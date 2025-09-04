@@ -102,6 +102,11 @@ const momentsToPgn = (moments) => {
     // Add the move
     pgn += moment.move;
 
+    // Add suffix if present
+    if (moment.suffix) {
+      pgn += moment.suffix;
+    }
+
     // Add comment if present
     if (moment.comment) {
       pgn += ` {${moment.comment}}`;
