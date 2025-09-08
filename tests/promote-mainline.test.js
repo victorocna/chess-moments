@@ -1,4 +1,4 @@
-const { flat, getNextMoments, promoteMainline } = require('..');
+const { flat, promoteMainline } = require('..');
 const { expect } = require('chai');
 
 describe('Promote mainline', () => {
