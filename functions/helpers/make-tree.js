@@ -1,8 +1,9 @@
 const buildMoment = require('../build-moment');
 
 /**
- * Groups an array of moments by consecutive depth sequences.
- * When the depth changes from one moment to the next, a new group is started.
+ * Converts a flat array of moments into a tree structure.
+ * Groups moments by consecutive depth sequences and adds sequential indices.
+ * When the depth changes from one moment to the next, a new group (line) is started.
  * Additionally, adds position marker objects (without move key) when depth changes.
  */
 const makeTree = (moments) => {
@@ -13,6 +14,7 @@ const makeTree = (moments) => {
   const grouped = [];
   let currentGroup = [];
   let lastDepth = 1; // Always start with depth 1
+  let index = 0; // Sequential index for all moments
 
   for (const moment of moments) {
     if (moment.depth !== lastDepth) {
@@ -28,13 +30,14 @@ const makeTree = (moments) => {
           fen: moment.fen,
           comment: moment.comment || '',
         });
-        currentGroup = [positionMarker, moment];
+        positionMarker.index = index++;
+        currentGroup = [positionMarker, { ...moment, index: index++ }];
       } else {
-        currentGroup = [moment];
+        currentGroup = [{ ...moment, index: index++ }];
       }
     } else {
       // Same depth or first moment, add to current group
-      currentGroup.push(moment);
+      currentGroup.push({ ...moment, index: index++ });
     }
     lastDepth = moment.depth;
   }
