@@ -1,5 +1,6 @@
-const { groupBy, flatten } = require('lodash');
+const { flatten } = require('lodash');
 const promoteMainline = require('./promote-mainline');
+const { makeTree } = require('../helpers');
 
 const promoteMainlineTree = (moments, current) => {
   try {
@@ -12,9 +13,8 @@ const promoteMainlineTree = (moments, current) => {
     const flatMoments = flatten(moments);
     const newMoments = promoteMainline(flatMoments, current);
 
-    // Regroup by depth into a nested array
-    const grouped = groupBy(newMoments, 'depth');
-    return Object.values(grouped);
+    // Group by consecutive depth sequences
+    return makeTree(newMoments);
   } catch {
     // In case of any error, return the original moments array
     return moments;
