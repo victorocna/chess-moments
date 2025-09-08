@@ -6,7 +6,8 @@ const {
   getPrevMoment,
   momentsToPgn,
   moveTrainer,
-  promoteMainline
+  promoteMainlineTree,
+  promoteMainline,
 } = require('./functions/extras');
 
 module.exports = {
@@ -21,5 +22,6 @@ module.exports = {
   getPrevMoment,
   momentsToPgn,
   moveTrainer,
-  promoteMainline
+  promoteMainlineTree,
+  promoteMainline,
 };
