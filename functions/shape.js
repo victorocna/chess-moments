@@ -1,4 +1,4 @@
-const { getBrushColor } = require('./helpers');
+const getBrushColor = require('./helpers/get-brush-color');
 
 module.exports = (comment) => {
   try {
