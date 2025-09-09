@@ -1,53 +1,29 @@
-const buildMoment = require('../build-moment');
-
 /**
  * Converts a flat array of moments into a tree structure.
- * Groups moments by consecutive depth sequences and adds sequential indices.
- * When the depth changes from one moment to the next, a new group (line) is started.
- * Additionally, adds position marker objects (without move key) when depth changes.
  */
 const makeTree = (moments) => {
   if (!Array.isArray(moments) || moments.length === 0) {
     return [];
   }
 
-  const grouped = [];
-  let currentGroup = [];
-  let lastDepth = 1; // Always start with depth 1
-  let index = 0; // Sequential index for all moments
+  const tree = [];
+  for (const item of moments) {
+    // Check if the current object does NOT have the 'move' property.
+    const isSplitPoint = !('move' in item);
 
-  for (const moment of moments) {
-    if (moment.depth !== lastDepth) {
-      // Depth changed, start a new group
-      if (currentGroup.length > 0) {
-        grouped.push(currentGroup);
-      }
-
-      // Add position marker when depth changes, but only if there's a moment with a "move" key
-      if (moment.move) {
-        const positionMarker = buildMoment({
-          depth: moment.depth,
-          fen: moment.fen,
-          comment: moment.comment || '',
-        });
-        positionMarker.index = index++;
-        currentGroup = [positionMarker, { ...moment, index: index++ }];
-      } else {
-        currentGroup = [{ ...moment, index: index++ }];
-      }
+    if (isSplitPoint) {
+      // If it's a split point, we start a new sub-array.
+      tree.push([item]);
     } else {
-      // Same depth or first moment, add to current group
-      currentGroup.push({ ...moment, index: index++ });
+      if (tree.length === 0) {
+        tree.push([]);
+      }
+      // Add the item to the last sub-array in the result.
+      tree[tree.length - 1].push(item);
     }
-    lastDepth = moment.depth;
   }
 
-  // Add the last group if it has items
-  if (currentGroup.length > 0) {
-    grouped.push(currentGroup);
-  }
-
-  return grouped;
+  return tree;
 };
 
 module.exports = makeTree;
