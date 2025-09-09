@@ -89,6 +89,15 @@ const promoteMainline = (moments, current) => {
     result.push(move);
   }
 
+  // First, add the position marker that separates sideline from mainline continuation
+  for (let i = sidelineEndIndex; i < moments.length; i++) {
+    if (!demotedIndices.has(i) && !moments[i].move) {
+      result.push({ ...moments[i] });
+      break; // Only add the first position marker
+    }
+  }
+
+  // Then add the promoted sideline moves (the continuation of the new mainline)
   for (let i = sidelinePositionIndex + 1; i < sidelineEndIndex; i++) {
     if (i === current.index) continue;
 
@@ -100,10 +109,16 @@ const promoteMainline = (moments, current) => {
     }
   }
 
+  // Finally, add any remaining non-demoted moves
   for (let i = sidelineEndIndex; i < moments.length; i++) {
-    if (!demotedIndices.has(i)) {
+    if (!demotedIndices.has(i) && moments[i].move) {
       result.push({ ...moments[i] });
     }
+  }
+
+  // Remove trailing position markers that don't precede any moves
+  while (result.length > 0 && !result[result.length - 1].move) {
+    result.pop();
   }
 
   // Reassign indices
