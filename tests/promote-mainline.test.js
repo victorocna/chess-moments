@@ -78,6 +78,32 @@ describe('Promote mainline', () => {
     expect(newMoments[11]?.move).to.equal('h5');
     expect(newMoments[11]?.depth).to.equal(1);
   });
+
+  it('Promote mainline: Pawn promotion', () => {
+    // Arrange
+    const pgn = [
+      '[FEN "8/4PK1k/8/R7/8/8/8/8 w - - 0 1"]',
+      '[SetUp "1"]',
+      '',
+      '1. e8=Q (1. e8=R Kh6 2. Rh8#) 1... Kh6 2. Qh8# *',
+    ];
+    const moments = flat(pgn);
+    const current = moments.find((m) => m.move === 'e8=R');
+
+    // Act
+    const newMoments = promoteMainline(moments, current);
+
+    // Assert
+    // Expected result: 1. e8=R (1. e8=Q Kh6 2. Qh8#) 1... Kh6 2. Rh8#
+    expect(newMoments[1]?.move).to.equal('e8=R');
+    expect(newMoments[1]?.depth).to.equal(1);
+    expect(newMoments[3]?.move).to.equal('e8=Q');
+    expect(newMoments[3]?.depth).to.equal(2);
+    expect(newMoments[4]?.move).to.equal('Kh6');
+    expect(newMoments[4]?.depth).to.equal(2);
+    expect(newMoments[8]?.move).to.equal('Rh8#');
+    expect(newMoments[8]?.depth).to.equal(1);
+  });
 });
 
 describe('Promote mainline: Fischer vs. Andersson', () => {
