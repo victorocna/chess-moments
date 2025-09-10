@@ -29,6 +29,20 @@ describe('Next moments', () => {
     expect(next[1].move).to.equal('c5');
   });
 
+  it('Next moments: Sideline after first move', () => {
+    // Arrange
+    const pgn = '1. e4 (1. d4) 1... e5 2. Nf3 Nc6 *';
+    const moments = flat(pgn);
+    const current = moments[0]; // First moment (initial position)
+
+    // Act
+    const next = getNextMoments(moments, current);
+
+    // Assert
+    expect(next[0]?.move).to.equal('e4');
+    expect(next[1]?.move).to.equal('d4');
+  });
+
   it('Next moments: Mainline and sideline for white', () => {
     // Arrange
     const pgn = '1. e4 e5 2. Nf3 (2. Bc4) *';

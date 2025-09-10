@@ -7,11 +7,6 @@ const getNextMoments = (moments, current) => {
   try {
     const next = [];
 
-    // If it's the first moment without move, add the next moment
-    if (current.index === 0 && !current.move) {
-      return [moments[1]];
-    }
-
     // Get next moments for further processing
     const nextIndex = moments.indexOf(current) + 1;
     const nextMoment = moments[nextIndex];
