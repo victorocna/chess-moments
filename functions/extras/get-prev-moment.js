@@ -18,7 +18,7 @@ const getPrevMoment = (moments, current) => {
 
     // If previous moment does not have a move and it's the initial position, return it
     if (!prevMoments?.move && prevMoments.fen === moments[0].fen) {
-      return moments[prevIndex];
+      return moments[0];
     }
 
     // Split moments until the current index

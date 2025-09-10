@@ -13,7 +13,7 @@ describe('Prev moments', () => {
     const previous = getPrevMoment(moments, current);
 
     // Assert
-    expect(previous.fen).to.equal(fen.initial);
+    expect(previous.fen).to.equal(moments[0].fen);
   });
 
   it('Prev moments: Mainline without sideline', () => {
@@ -39,7 +39,7 @@ describe('Prev moments', () => {
     const previous = getPrevMoment(moments, current);
 
     // Assert
-    expect(previous.fen).to.equal(fen.initial);
+    expect(previous.fen).to.equal(moments[0].fen);
   });
 
   it('Prev moments: Mainline and sideline for black', () => {
