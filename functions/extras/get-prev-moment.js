@@ -13,6 +13,14 @@ const getPrevMoment = (moments, current) => {
       return moments[0];
     }
 
+    const prevIndex = moments.indexOf(current) - 1;
+    const prevMoments = moments[prevIndex];
+
+    // If previous moment does not have a move and it's the initial position, return it
+    if (!prevMoments?.move && prevMoments.fen === moments[0].fen) {
+      return moments[prevIndex];
+    }
+
     // Split moments until the current index
     const currentIndex = moments.indexOf(current);
     const moves = moments.slice(0, currentIndex).filter((m) => m.move);

@@ -29,6 +29,19 @@ describe('Prev moments', () => {
     expect(previous.move).to.equal('Nf3');
   });
 
+  it('Prev moments: Sideline after first move', () => {
+    // Arrange
+    const pgn = '1. e4 (1. d4) 1... e5 2. Nf3 Nc6 *';
+    const moments = flat(pgn);
+    const current = moments.find((m) => m.move === 'd4');
+
+    // Act
+    const previous = getPrevMoment(moments, current);
+
+    // Assert
+    expect(previous.fen).to.equal(fen.initial);
+  });
+
   it('Prev moments: Mainline and sideline for black', () => {
     // Arrange
     const pgn = '1. e4 e5 (1... c5) *';
