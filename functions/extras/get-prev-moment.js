@@ -3,7 +3,9 @@
  */
 const getPrevMoment = (moments, current) => {
   try {
-    const sameDepth = moments[moments.indexOf(current) - 1];
+    const currentIndex = moments.findIndex((item) => item.fen === current.fen);
+
+    const sameDepth = moments[currentIndex - 1];
     if (sameDepth.move && sameDepth.depth === current.depth) {
       return sameDepth;
     }
@@ -13,16 +15,13 @@ const getPrevMoment = (moments, current) => {
       return moments[0];
     }
 
-    const prevIndex = moments.indexOf(current) - 1;
-    const prevMoments = moments[prevIndex];
-
     // If previous moment does not have a move and it's the initial position, return it
+    const prevMoments = moments[currentIndex - 1];
     if (!prevMoments?.move && prevMoments.fen === moments[0].fen) {
       return moments[0];
     }
 
     // Split moments until the current index
-    const currentIndex = moments.indexOf(current);
     const moves = moments.slice(0, currentIndex).filter((m) => m.move);
 
     // Add fullmove number to the current moment

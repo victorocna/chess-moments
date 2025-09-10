@@ -8,9 +8,9 @@ const getNextMoments = (moments, current) => {
     const next = [];
 
     // Get next moments for further processing
-    const nextIndex = moments.indexOf(current) + 1;
-    const nextMoment = moments[nextIndex];
-    const nextNextMoment = moments[nextIndex + 1];
+    const currentIndex = moments.findIndex((item) => item.fen === current.fen);
+    const nextMoment = moments[currentIndex + 1];
+    const nextNextMoment = moments[currentIndex + 2];
 
     // Early returns for edge cases
     if (!nextMoment) {
