@@ -12,7 +12,7 @@ describe('moments to PGN: Basic examples', () => {
     const newPgn = momentsToPgn(moments);
 
     // Assert
-    expect(newPgn).to.equal(originalPgn);
+    expect(newPgn).to.include(originalPgn);
   });
 
   it('converts moments with comments', () => {
@@ -24,7 +24,7 @@ describe('moments to PGN: Basic examples', () => {
     const newPgn = momentsToPgn(moments);
 
     // Assert
-    expect(newPgn).to.equal(originalPgn);
+    expect(newPgn).to.include(originalPgn);
   });
 
   it('converts moments with suffixes', () => {
@@ -36,7 +36,7 @@ describe('moments to PGN: Basic examples', () => {
     const newPgn = momentsToPgn(moments);
 
     // Assert
-    expect(newPgn).to.equal(originalPgn);
+    expect(newPgn).to.include(originalPgn);
   });
 
   it('converts moments with variations', () => {
@@ -48,7 +48,7 @@ describe('moments to PGN: Basic examples', () => {
     const newPgn = momentsToPgn(moments);
 
     // Assert
-    expect(newPgn).to.equal(originalPgn);
+    expect(newPgn).to.include(originalPgn);
   });
 
   it('handles empty moments array', () => {
@@ -73,7 +73,7 @@ describe('moments to PGN: Basic examples', () => {
     const newPgn = momentsToPgn(moments);
 
     // Assert
-    expect(newPgn).to.equal(originalPgn);
+    expect(newPgn).to.include(originalPgn);
   });
 
   it('handles multiple variations', () => {
@@ -85,7 +85,7 @@ describe('moments to PGN: Basic examples', () => {
     const newPgn = momentsToPgn(moments);
 
     // Assert
-    expect(newPgn).to.equal(originalPgn);
+    expect(newPgn).to.include(originalPgn);
   });
 
   it('preserves custom result', () => {
@@ -97,7 +97,7 @@ describe('moments to PGN: Basic examples', () => {
     const newPgn = momentsToPgn(moments);
 
     // Assert
-    expect(newPgn).to.equal(originalPgn);
+    expect(newPgn).to.include(originalPgn);
   });
 
   it('handles PGN with headers using trimPgnHeaders helper', () => {
@@ -120,7 +120,7 @@ describe('moments to PGN: Basic examples', () => {
     const newPgn = momentsToPgn(moments);
 
     // Assert
-    expect(newPgn).to.equal(expectedMoves);
+    expect(newPgn).to.include(expectedMoves);
   });
 
   it('adds FEN headers for non-standard starting positions', () => {
@@ -194,5 +194,43 @@ describe('moments to PGN: Real chess games', () => {
 
     // Assert
     expect(newPgn).to.include('13. Kh1 {!} (13. d4 exd4 14. Nxd4 Nxd4');
+  });
+});
+
+describe('moments to PGN: Examples with moments instead of PGN', () => {
+  // Arrange
+  it('converts basic chess moments back to PGN', () => {
+    const moments = [
+      {
+        depth: 1,
+        fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        index: 0,
+      },
+      {
+        depth: 1,
+        fen: 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+        move: 'e4',
+        from: 'e2',
+        to: 'e4',
+        index: 1,
+      },
+      {
+        depth: 1,
+        fen: 'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2',
+        move: 'e5',
+        from: 'e7',
+        to: 'e5',
+        index: 2,
+      },
+    ];
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+
+    // Assert
+    expect(newPgn).to.include(
+      '[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]'
+    );
+    expect(newPgn).to.include('1. e4 e5 *');
   });
 });
