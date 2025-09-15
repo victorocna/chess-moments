@@ -1,3 +1,4 @@
+const { isEmpty } = require('lodash');
 const fen = require('../fen');
 const { getBrushCode } = require('../helpers');
 
@@ -10,7 +11,7 @@ const momentsToPgn = (moments) => {
   let pgn = '';
 
   // Return empty PGN if no moments are provided
-  if (!Array.isArray(moments) || moments.length === 0) {
+  if (isEmpty(moments)) {
     pgn += `[SetUp "1"]\n`;
     pgn += `[FEN "${fen.initial}"]\n\n`;
     pgn += '*';
@@ -20,12 +21,9 @@ const momentsToPgn = (moments) => {
   let currentDepth = 1;
   let variationStack = [];
 
-  // Check if we need to add FEN headers for non-standard starting position
-  const initialMoment = moments[0];
-  if (initialMoment && initialMoment.fen && initialMoment.fen !== fen.initial) {
-    pgn += `[SetUp "1"]\n`;
-    pgn += `[FEN "${initialMoment.fen}"]\n\n`;
-  }
+  // Add FEN headers
+  pgn += `[SetUp "1"]\n`;
+  pgn += `[FEN "${moments[0].fen}"]\n\n`;
 
   for (let i = 0; i < moments.length; i++) {
     const moment = moments[i];
