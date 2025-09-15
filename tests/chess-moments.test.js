@@ -686,6 +686,20 @@ describe('chess variants as tree', () => {
 });
 
 describe('Edge cases', () => {
+  it('Empty PGN', () => {
+    // Arrange
+    const pgn = '';
+
+    // Act
+    const moments = flat(pgn);
+
+    // Assert
+    expect(moments.length).to.equal(1);
+    expect(moments[0].fen).to.equal(
+      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+    );
+  });
+
   it('No moves, multiple multiline comments and shapes', () => {
     const pgn = [
       '[FEN "r3kb1r/n1pbqp1p/ppnpp1pP/6P1/2PPPP2/2N1BN2/PP1Q4/1K1R1B1R b kq - 0 18"]',
