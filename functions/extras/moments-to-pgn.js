@@ -21,9 +21,43 @@ const momentsToPgn = (moments) => {
   let currentDepth = 1;
   let variationStack = [];
 
-  // Add FEN headers
-  pgn += `[SetUp "1"]\n`;
-  pgn += `[FEN "${moments[0].fen}"]\n\n`;
+  const headers = moments[0].headers;
+  const standardHeaders = [
+    'Event',
+    'Site',
+    'Date',
+    'Round',
+    'White',
+    'Black',
+    'Result',
+  ];
+
+  if (headers) {
+    // Add standard headers (excluding placeholder values)
+    for (const key of standardHeaders) {
+      if (
+        headers[key] &&
+        headers[key] !== '?' &&
+        headers[key] !== '????.??.??'
+      ) {
+        pgn += `[${key} "${headers[key]}"]\n`;
+      }
+    }
+
+    // Add custom headers
+    for (const key in headers) {
+      if (!standardHeaders.includes(key) && key !== 'FEN' && key !== 'SetUp') {
+        pgn += `[${key} "${headers[key]}"]\n`;
+      }
+    }
+  }
+
+  // Add SetUp and FEN headers
+  const setUp = headers?.SetUp || '1';
+  const fenString = headers?.FEN || moments[0].fen;
+
+  pgn += `[SetUp "${setUp}"]\n`;
+  pgn += `[FEN "${fenString}"]\n\n`;
 
   for (let i = 0; i < moments.length; i++) {
     const moment = moments[i];
