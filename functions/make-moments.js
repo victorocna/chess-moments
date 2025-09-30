@@ -5,7 +5,11 @@ const pgn = require('./pgn');
 const split = require('./split');
 
 const make = (sloppyPgn) => {
-  const normalizedPgn = pgn.normalize(sloppyPgn);
+  let normalizedPgn = pgn.normalize(sloppyPgn);
+  // when PGN is empty, create a default one with initial FEN
+  if (!normalizedPgn) {
+    normalizedPgn = pgn.build([], fen.initial);
+  }
 
   // load PGN and check headers for existing FEN
   const chess = new Chess(); // can throw if PGN is invalid
