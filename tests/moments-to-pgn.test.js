@@ -227,10 +227,9 @@ describe('moments to PGN: Examples with moments instead of PGN', () => {
     // Act
     const newPgn = momentsToPgn(moments);
 
-    // Assert
-    expect(newPgn).to.include(
-      '[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]'
-    );
+    // Assert - initial position should not have FEN/SetUp headers
+    expect(newPgn).to.not.include('[FEN');
+    expect(newPgn).to.not.include('[SetUp');
     expect(newPgn).to.include('1. e4 e5 *');
   });
 
@@ -331,6 +330,27 @@ describe('moments to PGN: Round-trip tests (old PGN = new PGN)', () => {
 
     // Assert - second conversion should produce identical PGN
     expect(newPgn).to.equal(finalPgn);
+  });
+
+  it('does not include FEN/SetUp headers for initial position', () => {
+    // Arrange
+    const originalPgn = [
+      '[Event "Test Game"]',
+      '[White "Player 1"]',
+      '[Black "Player 2"]',
+      '',
+      '1. e4 e5 2. Nf3 Nc6 *',
+    ];
+    const moments = flat(originalPgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+
+    // Assert - should not have FEN or SetUp headers for initial position
+    expect(newPgn).to.not.include('[FEN');
+    expect(newPgn).to.not.include('[SetUp');
+    expect(newPgn).to.include('[Event "Test Game"]');
+    expect(newPgn).to.include('1. e4 e5 2. Nf3 Nc6');
   });
 
   it('maintains PGN consistency with custom headers', () => {

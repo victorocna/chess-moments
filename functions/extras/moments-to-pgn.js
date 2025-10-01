@@ -52,12 +52,15 @@ const momentsToPgn = (moments) => {
     }
   }
 
-  // Add SetUp and FEN headers
-  const setUp = headers?.SetUp || '1';
   const fenString = headers?.FEN || moments[0].fen;
 
-  pgn += `[SetUp "${setUp}"]\n`;
-  pgn += `[FEN "${fenString}"]\n\n`;
+  if (fenString !== fen.initial) {
+    const setUp = headers?.SetUp || '1';
+    pgn += `[SetUp "${setUp}"]\n`;
+    pgn += `[FEN "${fenString}"]\n`;
+  }
+
+  pgn += '\n';
 
   for (let i = 0; i < moments.length; i++) {
     const moment = moments[i];
