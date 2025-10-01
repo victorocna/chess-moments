@@ -1,7 +1,7 @@
 const prettify = require('./prettify');
 const shape = require('./shape');
 
-module.exports = ({ depth, move, fen, comment, suffix, from, to }) => {
+module.exports = ({ depth, move, fen, comment, suffix, from, to, headers }) => {
   const moment = { depth, fen };
   if (move) {
     moment.move = move;
@@ -22,6 +22,9 @@ module.exports = ({ depth, move, fen, comment, suffix, from, to }) => {
   }
   if (suffix) {
     moment.suffix = suffix;
+  }
+  if (headers) {
+    moment.headers = headers;
   }
 
   return moment;

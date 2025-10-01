@@ -3,7 +3,7 @@ const { initial } = require('./fen');
 const pgn = require('./pgn');
 const moment = require('./moment');
 
-module.exports = (moves, fen = initial, depth = 1) => {
+module.exports = (moves, fen = initial, depth = 1, headers = null) => {
   const chess = new Chess();
   chess.loadPgn(pgn.build(moves, fen)); // can throw if PGN is invalid
 
@@ -17,6 +17,7 @@ module.exports = (moves, fen = initial, depth = 1) => {
     depth,
     comment: chess.getComment(),
     fen: chess.fen(),
+    headers,
   });
 
   const moments = history.map((item) => {
@@ -34,8 +35,8 @@ module.exports = (moves, fen = initial, depth = 1) => {
   });
 
   // finally, add the first chess "moment" when needed
-  const headers = chess.getHeaders();
-  if (headers.FEN || fen === initial || first.comment || first.shapes) {
+  const pgnHeaders = chess.getHeaders();
+  if (pgnHeaders.FEN || fen === initial || first.comment || first.shapes) {
     moments.unshift(first);
   }
 

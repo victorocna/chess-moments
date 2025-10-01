@@ -22,7 +22,7 @@ const make = (sloppyPgn) => {
   };
 
   const history = new Map();
-  const variations = split(normalizedPgn).map(({ moves, depth }) => {
+  const variations = split(normalizedPgn).map(({ moves, depth }, index) => {
     // find previous FEN
     if (history.get(store.depth)) {
       store.fen = fen.previous(history, moves, depth, store.depth);
@@ -30,7 +30,13 @@ const make = (sloppyPgn) => {
     store.depth = depth;
 
     // parse current moves with the computed FEN
-    const moments = parser(moves, store.fen, depth);
+    // only pass headers to the first move
+    const moments = parser(
+      moves,
+      store.fen,
+      depth,
+      index === 0 ? headers : null
+    );
 
     // set history for the current depth
     history.set(depth, fen.history(moments, history, depth));

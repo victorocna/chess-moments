@@ -227,10 +227,175 @@ describe('moments to PGN: Examples with moments instead of PGN', () => {
     // Act
     const newPgn = momentsToPgn(moments);
 
+    // Assert - initial position should not have FEN/SetUp headers
+    expect(newPgn).to.not.include('[FEN');
+    expect(newPgn).to.not.include('[SetUp');
+    expect(newPgn).to.include('1. e4 e5 *');
+  });
+
+  it('includes headers from moments when converting back to PGN', () => {
+    // Arrange
+    const pgn = [
+      '[Event "World Championship"]',
+      '[Site "Reykjavik"]',
+      '[Date "1972.07.11"]',
+      '[Round "1"]',
+      '[White "Spassky, Boris"]',
+      '[Black "Fischer, Robert J"]',
+      '[Result "1-0"]',
+      '[ECO "C92"]',
+      '[Opening "Ruy Lopez"]',
+      '',
+      '1. e4 e5 2. Nf3 1-0',
+    ];
+    const moments = flat(pgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+
+    // Assert
+    expect(newPgn).to.include('[Event "World Championship"]');
+    expect(newPgn).to.include('[Site "Reykjavik"]');
+    expect(newPgn).to.include('[Date "1972.07.11"]');
+    expect(newPgn).to.include('[Round "1"]');
+    expect(newPgn).to.include('[White "Spassky, Boris"]');
+    expect(newPgn).to.include('[Black "Fischer, Robert J"]');
+    expect(newPgn).to.include('[Result "1-0"]');
+    expect(newPgn).to.include('[ECO "C92"]');
+    expect(newPgn).to.include('[Opening "Ruy Lopez"]');
+    expect(newPgn).to.include('1. e4 e5 2. Nf3');
+  });
+
+  it('includes study headers when converting back to PGN', () => {
+    // Arrange
+    const pgn = [
+      '[Event "Starter pack (prototype): English Attack (TRAINABLE)"]',
+      '[Result "*"]',
+      '[Variant "Standard"]',
+      '[ECO "B07"]',
+      '[Opening "Pirc Defense"]',
+      '[StudyName "Starter pack (prototype)"]',
+      '[ChapterName "English Attack (TRAINABLE)"]',
+      '[UTCDate "2025.04.15"]',
+      '[UTCTime "19:07:51"]',
+      '[Annotator "https://lichess.org/@/RoyalFlushDraw"]',
+      '',
+      '1. d4 Nf6 2. Nc3 g6 *',
+    ];
+    const moments = flat(pgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+
     // Assert
     expect(newPgn).to.include(
-      '[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]'
+      '[Event "Starter pack (prototype): English Attack (TRAINABLE)"]'
     );
-    expect(newPgn).to.include('1. e4 e5 *');
+    expect(newPgn).to.include('[Variant "Standard"]');
+    expect(newPgn).to.include('[ECO "B07"]');
+    expect(newPgn).to.include('[Opening "Pirc Defense"]');
+    expect(newPgn).to.include('[StudyName "Starter pack (prototype)"]');
+    expect(newPgn).to.include('[ChapterName "English Attack (TRAINABLE)"]');
+    expect(newPgn).to.include('[UTCDate "2025.04.15"]');
+    expect(newPgn).to.include('[UTCTime "19:07:51"]');
+    expect(newPgn).to.include(
+      '[Annotator "https://lichess.org/@/RoyalFlushDraw"]'
+    );
+    expect(newPgn).to.include('1. d4 Nf6 2. Nc3 g6');
+  });
+});
+
+describe('moments to PGN: Round-trip tests (old PGN = new PGN)', () => {
+  it('maintains PGN consistency with headers', () => {
+    // Arrange
+    const originalPgn = [
+      '[Event "World Championship"]',
+      '[Site "Reykjavik"]',
+      '[Date "1972.07.11"]',
+      '[Round "1"]',
+      '[White "Spassky, Boris"]',
+      '[Black "Fischer, Robert J"]',
+      '[Result "1-0"]',
+      '[ECO "C92"]',
+      '[Opening "Ruy Lopez"]',
+      '',
+      '1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 1-0',
+    ];
+    const moments = flat(originalPgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+    const newMoments = flat(newPgn);
+    const finalPgn = momentsToPgn(newMoments);
+
+    // Assert - second conversion should produce identical PGN
+    expect(newPgn).to.equal(finalPgn);
+  });
+
+  it('does not include FEN/SetUp headers for initial position', () => {
+    // Arrange
+    const originalPgn = [
+      '[Event "Test Game"]',
+      '[White "Player 1"]',
+      '[Black "Player 2"]',
+      '',
+      '1. e4 e5 2. Nf3 Nc6 *',
+    ];
+    const moments = flat(originalPgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+
+    // Assert - should not have FEN or SetUp headers for initial position
+    expect(newPgn).to.not.include('[FEN');
+    expect(newPgn).to.not.include('[SetUp');
+    expect(newPgn).to.include('[Event "Test Game"]');
+    expect(newPgn).to.include('1. e4 e5 2. Nf3 Nc6');
+  });
+
+  it('maintains PGN consistency with custom headers', () => {
+    // Arrange
+    const originalPgn = [
+      '[Event "Starter pack (prototype): English Attack (TRAINABLE)"]',
+      '[Result "*"]',
+      '[Variant "Standard"]',
+      '[ECO "B07"]',
+      '[Opening "Pirc Defense"]',
+      '[StudyName "Starter pack (prototype)"]',
+      '[ChapterName "English Attack (TRAINABLE)"]',
+      '[UTCDate "2025.04.15"]',
+      '[UTCTime "19:07:51"]',
+      '[Annotator "https://lichess.org/@/RoyalFlushDraw"]',
+      '[ChapterURL "https://lichess.org/study/8tMJrAWn/p0OYoqUs"]',
+      '',
+      '1. d4 Nf6 2. Nc3 g6 3. e4 d6 *',
+    ];
+    const moments = flat(originalPgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+    const newMoments = flat(newPgn);
+    const finalPgn = momentsToPgn(newMoments);
+
+    // Assert - second conversion should produce identical PGN
+    expect(newPgn).to.equal(finalPgn);
+  });
+
+  it('maintains PGN consistency with comments and shapes', () => {
+    // Arrange
+    const originalPgn = [
+      '[Event "Test Game"]',
+      '',
+      '{ Initial comment } 1. e4 {Great move!} {[%csl Ge4]} e5 2. Nf3 Nc6 *',
+    ];
+    const moments = flat(originalPgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+    const newMoments = flat(newPgn);
+    const finalPgn = momentsToPgn(newMoments);
+
+    // Assert - second conversion should produce identical PGN
+    expect(newPgn).to.equal(finalPgn);
   });
 });
