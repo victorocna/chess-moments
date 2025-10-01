@@ -267,7 +267,7 @@ describe('moments to PGN: Examples with moments instead of PGN', () => {
     expect(newPgn).to.include('1. e4 e5 2. Nf3');
   });
 
-  it('includes Lichess study headers when converting back to PGN', () => {
+  it('includes study headers when converting back to PGN', () => {
     // Arrange
     const pgn = [
       '[Event "Starter pack (prototype): English Attack (TRAINABLE)"]',
@@ -303,5 +303,79 @@ describe('moments to PGN: Examples with moments instead of PGN', () => {
       '[Annotator "https://lichess.org/@/RoyalFlushDraw"]'
     );
     expect(newPgn).to.include('1. d4 Nf6 2. Nc3 g6');
+  });
+});
+
+describe('moments to PGN: Round-trip tests (old PGN = new PGN)', () => {
+  it('maintains PGN consistency with headers', () => {
+    // Arrange
+    const originalPgn = [
+      '[Event "World Championship"]',
+      '[Site "Reykjavik"]',
+      '[Date "1972.07.11"]',
+      '[Round "1"]',
+      '[White "Spassky, Boris"]',
+      '[Black "Fischer, Robert J"]',
+      '[Result "1-0"]',
+      '[ECO "C92"]',
+      '[Opening "Ruy Lopez"]',
+      '',
+      '1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 1-0',
+    ];
+    const moments = flat(originalPgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+    const newMoments = flat(newPgn);
+    const finalPgn = momentsToPgn(newMoments);
+
+    // Assert - second conversion should produce identical PGN
+    expect(newPgn).to.equal(finalPgn);
+  });
+
+  it('maintains PGN consistency with custom headers', () => {
+    // Arrange
+    const originalPgn = [
+      '[Event "Starter pack (prototype): English Attack (TRAINABLE)"]',
+      '[Result "*"]',
+      '[Variant "Standard"]',
+      '[ECO "B07"]',
+      '[Opening "Pirc Defense"]',
+      '[StudyName "Starter pack (prototype)"]',
+      '[ChapterName "English Attack (TRAINABLE)"]',
+      '[UTCDate "2025.04.15"]',
+      '[UTCTime "19:07:51"]',
+      '[Annotator "https://lichess.org/@/RoyalFlushDraw"]',
+      '[ChapterURL "https://lichess.org/study/8tMJrAWn/p0OYoqUs"]',
+      '',
+      '1. d4 Nf6 2. Nc3 g6 3. e4 d6 *',
+    ];
+    const moments = flat(originalPgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+    const newMoments = flat(newPgn);
+    const finalPgn = momentsToPgn(newMoments);
+
+    // Assert - second conversion should produce identical PGN
+    expect(newPgn).to.equal(finalPgn);
+  });
+
+  it('maintains PGN consistency with comments and shapes', () => {
+    // Arrange
+    const originalPgn = [
+      '[Event "Test Game"]',
+      '',
+      '{ Initial comment } 1. e4 {Great move!} {[%csl Ge4]} e5 2. Nf3 Nc6 *',
+    ];
+    const moments = flat(originalPgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+    const newMoments = flat(newPgn);
+    const finalPgn = momentsToPgn(newMoments);
+
+    // Assert - second conversion should produce identical PGN
+    expect(newPgn).to.equal(finalPgn);
   });
 });

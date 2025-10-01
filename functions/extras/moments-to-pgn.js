@@ -198,8 +198,8 @@ const momentsToPgn = (moments) => {
     pgn += ')';
   }
 
-  // Add default result
-  pgn += ' *';
+  // Add result from headers if available, otherwise default to *
+  pgn += ` ${headers?.Result || '*'}`;
 
   return pgn.trim();
 };
