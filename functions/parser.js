@@ -1,7 +1,9 @@
 const { Chess } = require('chess.js');
+const { invert } = require('lodash');
 const { initial } = require('./fen');
 const pgn = require('./pgn');
 const moment = require('./moment');
+const glyphs = require('../constants/glyphs');
 
 module.exports = (moves, fen = initial, depth = 1, headers = null) => {
   const chess = new Chess();
@@ -30,6 +32,7 @@ module.exports = (moves, fen = initial, depth = 1, headers = null) => {
       to: item.to,
       comment: chess.getComment(),
       suffix: chess.getSuffixAnnotation(),
+      glyph: invert(glyphs)[chess.getGlyph()],
       fen: chess.fen(),
     });
   });

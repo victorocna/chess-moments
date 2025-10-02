@@ -39,6 +39,30 @@ describe('moments to PGN: Basic examples', () => {
     expect(newPgn).to.include(originalPgn);
   });
 
+  it('converts moments with glyphs', () => {
+    // Arrange
+    const originalPgn = '1. e4 $7 e5 2. Nf3 $16 Nc6 *';
+    const moments = flat(originalPgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+
+    // Assert
+    expect(newPgn).to.include('1. e4 $7 e5 2. Nf3 $16 Nc6 *');
+  });
+
+  it('converts moments with both suffix and glyph', () => {
+    // Arrange
+    const originalPgn = '1. e4! $7 d5?! $22 *';
+    const moments = flat(originalPgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+
+    // Assert
+    expect(newPgn).to.include('1. e4! $7 d5?! $22 *');
+  });
+
   it('converts moments with variations', () => {
     // Arrange
     const originalPgn = '1. e4 e5 (1... c5) 2. Nf3 *';

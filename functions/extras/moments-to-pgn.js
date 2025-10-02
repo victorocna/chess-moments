@@ -142,6 +142,11 @@ const momentsToPgn = (moments) => {
       pgn += moment.suffix;
     }
 
+    // Add glyph if present (keep as NAG code from original PGN)
+    if (moment.glyph) {
+      pgn += ` ${moment.glyph}`;
+    }
+
     // Add comment if present
     if (moment.comment) {
       pgn += ` {${moment.comment}}`;
