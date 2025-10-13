@@ -10,8 +10,8 @@ describe('Chess glyphs: Basic examples', () => {
     const moments = flat(originalPgn);
 
     // Assert
-    expect(moments[1]?.glyph).to.equal('$7');
-    expect(moments[3]?.glyph).to.equal('$22');
+    expect(moments[1]?.nags).to.deep.equal([7]);
+    expect(moments[3]?.nags).to.deep.equal([22]);
   });
 
   it('Has multiple different glyphs', () => {
@@ -22,10 +22,10 @@ describe('Chess glyphs: Basic examples', () => {
     const moments = flat(originalPgn);
 
     // Assert
-    expect(moments[1]?.glyph).to.equal('$10');
-    expect(moments[3]?.glyph).to.equal('$13');
-    expect(moments[5]?.glyph).to.equal('$14');
-    expect(moments[7]?.glyph).to.equal('$16');
+    expect(moments[1]?.nags).to.deep.equal([10]);
+    expect(moments[3]?.nags).to.deep.equal([13]);
+    expect(moments[5]?.nags).to.deep.equal([14]);
+    expect(moments[7]?.nags).to.deep.equal([16]);
   });
 
   it('Works with both suffix and glyph on same move', () => {
@@ -37,8 +37,20 @@ describe('Chess glyphs: Basic examples', () => {
 
     // Assert
     expect(moments[1]?.suffix).to.equal('!');
-    expect(moments[1]?.glyph).to.equal('$7');
+    expect(moments[1]?.nags).to.deep.equal([7]);
     expect(moments[2]?.suffix).to.equal('?!');
-    expect(moments[2]?.glyph).to.equal('$22');
+    expect(moments[2]?.nags).to.deep.equal([22]);
+  });
+
+  it('Supports multiple NAGs on same move', () => {
+    // Arrange
+    const originalPgn = '1. e4 $7 $10 a6 2. d4 $16 $36 $40 *';
+
+    // Act
+    const moments = flat(originalPgn);
+
+    // Assert
+    expect(moments[1]?.nags).to.deep.equal([7, 10]);
+    expect(moments[3]?.nags).to.deep.equal([16, 36, 40]);
   });
 });
