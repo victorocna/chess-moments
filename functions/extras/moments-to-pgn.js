@@ -89,8 +89,38 @@ const momentsToPgn = (moments) => {
         }
       }
 
-      // Add initial comment if present
-      if (moment.comment) {
+      // Add initial comment and/or shapes if present
+      if (moment.shapes && moment.shapes.length > 0) {
+        let shapesComment = '';
+        const squareHighlights = moment.shapes.filter(
+          (s) => !s.dest || s.dest === ']'
+        );
+        const arrows = moment.shapes.filter((s) => s.dest && s.dest !== ']');
+
+        if (squareHighlights.length > 0) {
+          const coloredSquares = squareHighlights
+            .map((s) => `${getBrushCode(s.brush)}${s.orig}`)
+            .join(',');
+          shapesComment += `[%csl ${coloredSquares}]`;
+        }
+
+        if (arrows.length > 0) {
+          const coloredArrows = arrows
+            .map((s) => `${getBrushCode(s.brush)}${s.orig}${s.dest}`)
+            .join(',');
+          if (shapesComment) shapesComment += ' ';
+          shapesComment += `[%cal ${coloredArrows}]`;
+        }
+
+        if (shapesComment) {
+          const commentText = moment.comment
+            ? `${moment.comment} ${shapesComment}`
+            : shapesComment;
+          pgn += `{${commentText}} `;
+        } else if (moment.comment) {
+          pgn += `{${moment.comment}} `;
+        }
+      } else if (moment.comment) {
         pgn += `{${moment.comment}} `;
       }
       continue;
