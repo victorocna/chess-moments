@@ -7,7 +7,7 @@ module.exports = ({
   fen,
   comment,
   suffix,
-  glyph,
+  nags,
   from,
   to,
   headers,
@@ -33,8 +33,8 @@ module.exports = ({
   if (suffix) {
     moment.suffix = suffix;
   }
-  if (glyph) {
-    moment.glyph = glyph;
+  if (nags) {
+    moment.nags = nags;
   }
   if (headers) {
     moment.headers = headers;

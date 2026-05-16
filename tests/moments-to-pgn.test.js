@@ -63,6 +63,18 @@ describe('moments to PGN: Basic examples', () => {
     expect(newPgn).to.include('1. e4! $7 d5?! $22 *');
   });
 
+  it('converts moments with multiple NAGs on same move', () => {
+    // Arrange
+    const originalPgn = '1. e4 $7 $10 a6 2. d4 $16 $36 $40 *';
+    const moments = flat(originalPgn);
+
+    // Act
+    const newPgn = momentsToPgn(moments);
+
+    // Assert
+    expect(newPgn).to.include('1. e4 $7 $10 a6 2. d4 $16 $36 $40 *');
+  });
+
   it('converts moments with variations', () => {
     // Arrange
     const originalPgn = '1. e4 e5 (1... c5) 2. Nf3 *';
