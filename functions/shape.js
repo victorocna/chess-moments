@@ -9,7 +9,7 @@ module.exports = (comment) => {
     for (const shapeComment of shapeComments) {
       // transform "[%csl Ya7" into "Ya7"
       const possibilities = ['[%cal', '[%csl'];
-      const [type, ...shapes] = shapeComment.split(' ');
+      const [type, ...shapes] = shapeComment.slice(0, -1).split(' ');
       if (!possibilities.includes(type)) {
         return false;
       }
