@@ -155,8 +155,15 @@ const momentsToPgn = (moments) => {
       }
     }
 
-    // Add move number for white moves or when starting a variation
-    if (moveWasByWhite || (depth > 1 && pgn.endsWith('('))) {
+    // Add move number for white moves, when starting a variation, or for a
+    // black move that follows a variation close ')' or a comment '}' — PGN
+    // requires the "N..." indicator whenever a black move isn't immediately
+    // preceded by its white pair, else the move text is unparseable.
+    if (
+      moveWasByWhite ||
+      (depth > 1 && pgn.endsWith('(')) ||
+      (!moveWasByWhite && /[)}]\s*$/.test(pgn))
+    ) {
       pgn += `${moveNumber}.`;
       if (!moveWasByWhite) {
         pgn += '..';
