@@ -159,10 +159,12 @@ const momentsToPgn = (moments) => {
     // black move that follows a variation close ')' or a comment '}' — PGN
     // requires the "N..." indicator whenever a black move isn't immediately
     // preceded by its white pair, else the move text is unparseable.
+    const prev = pgn.trimEnd();
+    const afterBreak = prev.endsWith(')') || prev.endsWith('}');
     if (
       moveWasByWhite ||
       (depth > 1 && pgn.endsWith('(')) ||
-      (!moveWasByWhite && /[)}]\s*$/.test(pgn))
+      (!moveWasByWhite && afterBreak)
     ) {
       pgn += `${moveNumber}.`;
       if (!moveWasByWhite) {
